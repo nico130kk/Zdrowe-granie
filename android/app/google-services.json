@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "385441570217",
+    "project_id": "zdrowe",
+    "storage_bucket": "zdrowe.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:385441570217:android:79b4a796036070ee2238b8",
+        "android_client_info": {
+          "package_name": "com.example.zdrofit_aplikacja"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBNOR2wCzD_HQRBCN8Fq8s_HUmXgjUbzPE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
