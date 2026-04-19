@@ -2,17 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart'; // Importujemy rdzeń Firebase
 import 'firebase_options.dart'; // Importujemy wygenerowany plik z opcjami
 import 'screens/main_screen.dart'; // Importujemy Twój główny ekran
+import 'package:provider/provider.dart';
+import 'services/user_provider.dart';
 
 void main() async {
-  // 1. Zapewniamy, że silnik Fluttera jest zainicjalizowany przed Firebase
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
-  // 2. Odpalamy połączenie z Firebase używając Twoich opcji
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => UserProvider(),
+      child: const MyApp(),
+    ),
   );
-
-  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {

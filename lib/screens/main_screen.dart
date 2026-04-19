@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart'; // PAMIĘTAJ O TYM IMPORCIE!
+import '../services/user_provider.dart';
 import 'lessons_screen.dart';
 import 'challenge_screen.dart';
 import 'profile_screen.dart';
@@ -12,6 +14,15 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0;
+  @override
+  void initState() {
+    super.initState();
+    // Odpalamy ładowanie usera raz na całą sesję
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<UserProvider>().loadUser("user_123");
+    });
+  }
+  
 
   static const List<Widget> _screens = <Widget>[
     LessonsScreen(),

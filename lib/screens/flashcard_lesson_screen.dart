@@ -1,44 +1,233 @@
 import 'package:flutter/material.dart';
-import '../widgets/flip_card.dart';
+import 'package:provider/provider.dart';
+import 'dart:math';
+import '../models/lesson_data.dart';
+import '../services/user_provider.dart';
 
 class FlashcardLessonScreen extends StatefulWidget {
-  const FlashcardLessonScreen({super.key});
+  final Lesson lesson; // Ekran musi wiedzieć, jaką lekcję wyświetla!
+
+  const FlashcardLessonScreen({super.key, required this.lesson});
+
   @override
   State<FlashcardLessonScreen> createState() => _FlashcardLessonScreenState();
 }
 
 class _FlashcardLessonScreenState extends State<FlashcardLessonScreen> {
-  final PageController _pageController = PageController();
   int _currentIndex = 0;
-  final List<Map<String, String>> _flashcards = [
-    {'front': 'Czym jest sól i za co odpowiada w organizmie?', 'back': 'Sól (chlorek sodu, NaCl) reguluje gospodarkę wodno-elektrolitową i pomaga we wchłanianiu składników w jelitach. Nie należy jej całkowicie unikać, lecz kontrolować jej ilość.'},
-    {'front': 'Jakie są zalecenia WHO dotyczące spożycia soli?', 'back': 'Zaleca się spożywanie do ok. 5 gramów dziennie! Sportowcy mogą potrzebować jej więcej ze względu na szybsze zużycie podczas wysiłku.'},
-    {'front': 'Czym może skutkować spożywanie zbyt dużej ilości soli?', 'back': '• Nadciśnieniem tętniczym\n• Chorobami sercowo-naczyniowymi\n• Chorobami nerek\n• Zatrzymywaniem wody i obrzękiem'},
-    {'front': 'Jakie produkty zawierają najwięcej soli?', 'back': 'Pieczywo, wędliny, sery, dania instant, fast food, chipsy i przekąski, sosy (np. sojowy, ketchup) oraz konserwy.'},
-    {'front': 'Mit: Sól himalajska (różowa) jest zdrowsza od zwykłej soli. Prawda czy fałsz?', 'back': 'Fałsz! Niezależnie od rodzaju, każda sól to głównie NaCl. Różnice mineralne są minimalne i bez większego znaczenia zdrowotnego.'},
-  ];
+  bool _showQuiz = false;
+  bool _isFlipped = false; // Czy fiszka jest odwrócona
+  int? _selectedAnswerIndex;
+
+  void _nextCard() {
+    if (_currentIndex < widget.lesson.flashcards.length - 1) {
+      setState(() {
+        _currentIndex++;
+        _isFlipped = false; // Resetujemy obrót dla nowej fiszki
+      });
+    } else {
+      setState(() {
+        _showQuiz = true; // Koniec fiszek, odpalamy quiz!
+      });
+    }
+  }
+
+  void _checkAnswer() {
+    if (_selectedAnswerIndex == null) return;
+
+    if (_selectedAnswerIndex == widget.lesson.finalQuiz.correctAnswerIndex) {
+      // DOBRA ODPOWIEDŹ! 
+      context.read<UserProvider>().completeLesson(widget.lesson.id);
+      
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (_) => AlertDialog(
+          title: const Text("Gratulacje! 🎉"),
+          content: const Text("Test zdany perfekcyjnie. Odblokowano nowe wyzwanie!"),
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context); // Zamyka pop-up
+                Navigator.pop(context); // Wraca do listy lekcji
+              },
+              child: const Text("Zakończ"),
+            )
+          ],
+        ),
+      );
+    } else {
+      // ZŁA ODPOWIEDŹ
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Niestety to zła odpowiedź. Spróbuj jeszcze raz! ❌"),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
-      appBar: AppBar(title: const Text('Lekcja 1: Sól'), backgroundColor: Colors.white, foregroundColor: Colors.black, elevation: 0),
-      body: Column(
-        children: [
-          LinearProgressIndicator(value: (_currentIndex + 1) / _flashcards.length, backgroundColor: Colors.grey.shade300, color: Colors.green, minHeight: 8),
-          const SizedBox(height: 10),
-          Text('Fiszka ${_currentIndex + 1} z ${_flashcards.length}', style: const TextStyle(color: Colors.grey, fontWeight: FontWeight.bold)),
-          Expanded(
-            child: PageView.builder(
-              controller: _pageController,
-              onPageChanged: (index) => setState(() => _currentIndex = index),
-              itemCount: _flashcards.length,
-              itemBuilder: (context, index) => Padding(padding: const EdgeInsets.all(24.0), child: FlipCardWidget(frontText: _flashcards[index]['front']!, backText: _flashcards[index]['back']!)),
+      backgroundColor: Colors.grey[100],
+      appBar: AppBar(
+        title: Text(widget.lesson.title),
+        centerTitle: true,
+        backgroundColor: Colors.white,
+        elevation: 0,
+      ),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(24.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              // Pasek postępu u góry
+              LinearProgressIndicator(
+                value: _showQuiz ? 1.0 : (_currentIndex + 1) / (widget.lesson.flashcards.length + 1),
+                backgroundColor: Colors.grey[300],
+                color: Colors.green,
+                minHeight: 8,
+              ),
+              const SizedBox(height: 32),
+
+              // GŁÓWNY WIDOK: FISZKA ALBO QUIZ
+              Expanded(
+                child: _showQuiz ? _buildQuizView() : _buildFlashcardView(),
+              ),
+
+              const SizedBox(height: 24),
+
+              // PRZYCISK DALEJ / SPRAWDŹ
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.green,
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                ),
+                onPressed: _showQuiz 
+                  ? (_selectedAnswerIndex != null ? _checkAnswer : null) // W quizie sprawdza odpowiedź
+                  : _nextCard, // W fiszkach idzie dalej
+                child: Text(
+                  _showQuiz ? "SPRAWDŹ ODPOWIEDŹ" : "DALEJ",
+                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  // ================= TRYB FISZKI =================
+  Widget _buildFlashcardView() {
+    final card = widget.lesson.flashcards[_currentIndex];
+    
+    return GestureDetector(
+      onTap: () => setState(() => _isFlipped = !_isFlipped), // Kliknięcie obraca fiszkę
+      child: AnimatedSwitcher(
+        duration: const Duration(milliseconds: 300),
+        transitionBuilder: (Widget child, Animation<double> animation) {
+          final rotateAnim = Tween(begin: pi, end: 0.0).animate(animation);
+          return AnimatedBuilder(
+            animation: rotateAnim,
+            child: child,
+            builder: (context, widget) {
+              final isUnder = (ValueKey(_isFlipped) != widget?.key);
+              final value = isUnder ? min(rotateAnim.value, pi / 2) : rotateAnim.value;
+              return Transform(
+                transform: Matrix4.rotationY(value),
+                alignment: Alignment.center,
+                child: widget,
+              );
+            },
+          );
+        },
+        child: Card(
+          key: ValueKey(_isFlipped),
+          elevation: 8,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          child: Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(24),
+            decoration: BoxDecoration(
+              color: _isFlipped ? Colors.green[50] : Colors.white,
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  _isFlipped ? Icons.lightbulb_outline : Icons.help_outline, 
+                  size: 48, 
+                  color: _isFlipped ? Colors.green : Colors.orange
+                ),
+                const SizedBox(height: 24),
+                Text(
+                  _isFlipped ? card.back : card.front,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w500),
+                ),
+                const Spacer(),
+                Text(
+                  "Dotknij, aby odwrócić",
+                  style: TextStyle(color: Colors.grey[500]),
+                )
+              ],
             ),
           ),
-          const Padding(padding: EdgeInsets.only(bottom: 40.0), child: Text('Stuknij kartę, aby ją odwrócić.\nPrzesuń w lewo/prawo, aby zmienić fiszkę.', textAlign: TextAlign.center, style: TextStyle(color: Colors.grey))),
-        ],
+        ),
       ),
+    );
+  }
+
+  // ================= TRYB QUIZU =================
+  Widget _buildQuizView() {
+    final quiz = widget.lesson.finalQuiz;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        const Text(
+          "Czas na test!",
+          textAlign: TextAlign.center,
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.green),
+        ),
+        const SizedBox(height: 24),
+        Text(
+          quiz.question,
+          textAlign: TextAlign.center,
+          style: const TextStyle(fontSize: 20),
+        ),
+        const SizedBox(height: 32),
+        // Generujemy guziki z odpowiedziami
+        ...List.generate(quiz.options.length, (index) {
+          final isSelected = _selectedAnswerIndex == index;
+          return Padding(
+            padding: const EdgeInsets.only(bottom: 12.0),
+            child: OutlinedButton(
+              style: OutlinedButton.styleFrom(
+                backgroundColor: isSelected ? Colors.green[50] : Colors.white,
+                side: BorderSide(color: isSelected ? Colors.green : Colors.grey[300]!, width: 2),
+                padding: const EdgeInsets.all(16),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              ),
+              onPressed: () => setState(() => _selectedAnswerIndex = index),
+              child: Text(
+                quiz.options[index],
+                style: TextStyle(
+                  fontSize: 16, 
+                  color: isSelected ? Colors.green[800] : Colors.black87,
+                  fontWeight: isSelected ? FontWeight.bold : FontWeight.normal
+                ),
+              ),
+            ),
+          );
+        }),
+      ],
     );
   }
 }

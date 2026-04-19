@@ -1,239 +1,162 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../services/user_provider.dart';
 
-class ChallengesScreen extends StatefulWidget {
+class ChallengesScreen extends StatelessWidget {
   const ChallengesScreen({super.key});
 
   @override
-  State<ChallengesScreen> createState() => _ChallengesScreenState();
-}
-
-class _ChallengesScreenState extends State<ChallengesScreen> {
-  // Limity dni dla poszczególnych medali
-  final int _maxBronzeDays = 6;
-  final int _maxSilverDays = 14;
-  final int _maxGoldDays = 30;
-
-  // Postęp dla każdego etapu osobno
-  int _bronzeProgress = 0;
-  int _silverProgress = 0;
-  int _goldProgress = 0;
-
-  bool _canCheckToday = true;
-
-  // Sprawdzamy, czy dany etap jest ukończony
-  bool get _isBronzeDone => _bronzeProgress >= _maxBronzeDays;
-  bool get _isSilverDone => _silverProgress >= _maxSilverDays;
-  bool get _isGoldDone => _goldProgress >= _maxGoldDays;
-
-  void _markTodayDone() {
-    if (_canCheckToday) {
-      setState(() {
-        // Zwiększamy licznik tylko aktualnego wyzwania
-        if (!_isBronzeDone) {
-          _bronzeProgress++;
-          _showSnack('Krok bliżej do Brązu! 🥉', _bronzeProgress, _maxBronzeDays);
-        } else if (!_isSilverDone) {
-          _silverProgress++;
-           _showSnack('Krok bliżej do Srebra! 🥈', _silverProgress, _maxSilverDays);
-        } else if (!_isGoldDone) {
-          _goldProgress++;
-           _showSnack('Krok bliżej do Złota! 🥇', _goldProgress, _maxGoldDays);
-        }
-
-        _canCheckToday = false;
-      });
-    }
-  }
-
-  void _showSnack(String msg, int progress, int max) {
-    bool finished = progress == max;
-    ScaffoldMessenger.of(context).hideCurrentSnackBar();
-    ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(finished ? 'Gratulacje! Poziom ukończony!' : msg),
-          backgroundColor: const Color(0xFF00C853),
-          duration: const Duration(seconds: 2),
-        ),
-      );
-  }
-
-  void _debugNextDay() {
-    setState(() {
-      _canCheckToday = true;
-    });
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('⏳ Symulacja: Nastał nowy dzień!'), duration: Duration(seconds: 1)),
-    );
-  }
-
-  @override
   Widget build(BuildContext context) {
+    // 1. Podpinamy się pod Magazyn (Provider)
+    final userProvider = context.watch<UserProvider>();
+    final profile = userProvider.profile;
+
+    // 2. Obsługa ładowania i braku danych
+    if (userProvider.isLoading) {
+      return const Scaffold(
+        body: Center(child: CircularProgressIndicator(color: Colors.green)),
+      );
+    }
+
+    if (profile == null) {
+      return const Scaffold(
+        body: Center(child: Text("Błąd: Nie można załadować profilu.")),
+      );
+    }
+
+    // 3. Pobranie danych z profilu
+    int bronze = profile.challengesProgress['sol_braz'] ?? 0;
+    int silver = profile.challengesProgress['sol_srebro'] ?? 0;
+    int gold = profile.challengesProgress['sol_zloto'] ?? 0;
+
+    // Logika sprawdzania, czy użytkownik już dziś kliknął
+    bool canClickToday = true;
+    if (profile.lastReviewDate != null) {
+      final now = DateTime.now();
+      final last = profile.lastReviewDate!;
+      if (last.year == now.year && last.month == now.month && last.day == now.day) {
+        canClickToday = false;
+      }
+    }
+
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.grey[100],
       appBar: AppBar(
-        title: const Text('Wyzwania', style: TextStyle(fontWeight: FontWeight.bold)),
+        title: const Text("Twoje Wyzwania", style: TextStyle(fontWeight: FontWeight.bold)),
+        centerTitle: true,
         backgroundColor: Colors.white,
         elevation: 0,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.fast_forward, color: Colors.grey),
-            onPressed: _debugNextDay,
-            tooltip: 'Następny dzień (Test)',
-          )
-        ],
       ),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          // LOGIKA WYŚWIETLANIA:
-          // Jeśli Brąz NIE jest skończony -> Pokaż Brąz
-          if (!_isBronzeDone)
-            _buildSegmentedChallengeCard(
-              title: 'Sól: Brąz',
-              medalIconColor: Colors.brown.shade400,
-              progress: _bronzeProgress,
-              maxProgress: _maxBronzeDays,
-              isActive: true,
-              canCheckToday: _canCheckToday,
-              onCheckIn: _markTodayDone,
-              description: 'Nie dosalaj niczego na talerzu. Wytrzymaj 6 dni!',
-            )
-          // W przeciwnym razie, jeśli Srebro NIE jest skończone -> Pokaż Srebro
-          else if (!_isSilverDone)
-            _buildSegmentedChallengeCard(
-              title: 'Sól: Srebro',
-              medalIconColor: Colors.grey.shade400,
-              progress: _silverProgress,
-              maxProgress: _maxSilverDays,
-              isActive: true,
-              canCheckToday: _canCheckToday,
-              onCheckIn: _markTodayDone,
-              description: 'Unikaj fast foodów i chipsów. Wytrzymaj 14 dni!',
-            )
-          // W przeciwnym razie, jeśli Złoto NIE jest skończone -> Pokaż Złoto
-          else if (!_isGoldDone)
-            _buildSegmentedChallengeCard(
-              title: 'Sól: Złoto',
-              medalIconColor: Colors.amber,
-              progress: _goldProgress,
-              maxProgress: _maxGoldDays,
-              isActive: true,
-              canCheckToday: _canCheckToday,
-              onCheckIn: _markTodayDone,
-              description: 'Pełna kontrola soli. Wytrzymaj 30 dni!',
-            )
-          // Jeśli wszystko skończone -> Ekran zwycięstwa
-          else
-             Container(
-               padding: const EdgeInsets.all(30),
-               alignment: Alignment.center,
-               child: const Column(
-                 children: [
-                   Icon(Icons.emoji_events, size: 80, color: Colors.amber),
-                   SizedBox(height: 20),
-                   Text("Mistrz Soli!", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-                   SizedBox(height: 10),
-                   Text("Ukończyłeś wszystkie wyzwania na ten temat.", textAlign: TextAlign.center, style: TextStyle(color: Colors.grey)),
-                 ],
-               ),
-             )
+          _buildChallengeSection(
+            title: "🥉 Brązowy Medal (6 dni)",
+            progress: bronze,
+            total: 6,
+            color: Colors.orange[800]!,
+            isLocked: false,
+          ),
+          const SizedBox(height: 16),
+          _buildChallengeSection(
+            title: "🥈 Srebrny Medal (14 dni)",
+            progress: silver,
+            total: 14,
+            color: Colors.blueGrey[400]!,
+            isLocked: bronze < 6, // Zablokowane póki nie ma brązu
+          ),
+          const SizedBox(height: 16),
+          _buildChallengeSection(
+            title: "🥇 Złoty Medal (30 dni)",
+            progress: gold,
+            total: 30,
+            color: Colors.amber[700]!,
+            isLocked: silver < 14, // Zablokowane póki nie ma srebra
+          ),
+          const SizedBox(height: 32),
+          
+          // GŁÓWNY PRZYCISK AKCJI
+          ElevatedButton(
+            onPressed: canClickToday 
+              ? () => _handleDailyProgress(context, userProvider, bronze, silver, gold)
+              : null, // Przycisk nieaktywny jeśli już kliknięto
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.green,
+              foregroundColor: Colors.white,
+              padding: const EdgeInsets.symmetric(vertical: 16),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            ),
+            child: Text(
+              canClickToday ? "ODHACZ DZISIEJSZY TRENING" : "WYKONANO DZISIAJ ✅",
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+          ),
+          if (!canClickToday)
+            const Padding(
+              padding: EdgeInsets.only(top: 8.0),
+              child: Text("Wróć jutro, aby kontynuować serię!", textAlign: TextAlign.center, style: TextStyle(color: Colors.grey)),
+            ),
         ],
       ),
     );
   }
 
-  Widget _buildSegmentedChallengeCard({
-    required String title,
-    required Color medalIconColor,
-    required int progress,
-    required int maxProgress,
-    required bool isActive,
-    bool canCheckToday = false,
-    VoidCallback? onCheckIn,
-    String description = '',
-  }) {
-    // Obliczamy ile dni zostało
-    int remainingDays = maxProgress - progress;
-    // Sprawdzamy czy ten konkretny etap jest skończony
-    bool isCompleted = progress >= maxProgress;
+  // LOGIKA ZWIĘKSZANIA PROGRESU
+  void _handleDailyProgress(BuildContext context, UserProvider provider, int b, int s, int g) {
+    if (b < 6) {
+      provider.updateChallenge('sol_braz', b + 1);
+    } else if (s < 14) {
+      provider.updateChallenge('sol_srebro', s + 1);
+    } else if (g < 30) {
+      provider.updateChallenge('sol_zloto', g + 1);
+    }
+    
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text("Świetnie! Postęp zapisany w chmurze ☁️")),
+    );
+  }
 
+  // WIDŻET POJEDYNCZEJ SEKCJI WYZWANIA
+  Widget _buildChallengeSection({
+    required String title, 
+    required int progress, 
+    required int total, 
+    required Color color,
+    required bool isLocked,
+  }) {
+    double percent = progress / total;
+    
     return Container(
-      margin: const EdgeInsets.only(bottom: 24),
-      decoration: const BoxDecoration(
-        border: Border(bottom: BorderSide(color: Colors.black12, width: 2)),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: isLocked ? Colors.grey[200] : Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10)],
       ),
-      padding: const EdgeInsets.only(bottom: 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
-            children: [
-              Text(
-                title,
-                style: TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.w400,
-                  color: isActive ? Colors.black : Colors.grey,
-                ),
-              ),
-              const SizedBox(width: 8),
-              Icon(Icons.military_tech, color: medalIconColor, size: 28),
-            ],
-          ),
-          
-          if (isActive && description.isNotEmpty)
-            Padding(
-              padding: const EdgeInsets.only(top: 4, bottom: 8),
-              child: Text(description, style: const TextStyle(color: Colors.grey, fontSize: 13)),
-            ),
-            
-          const SizedBox(height: 12),
-
-          // Renderowanie "kreseczek" postępu
-          Row(
-            children: List.generate(maxProgress, (index) {
-              return Expanded(
-                child: Container(
-                  height: 24,
-                  // Dodajemy mały margines między segmentami (chyba że to ostatni)
-                  margin: EdgeInsets.only(right: index == maxProgress - 1 ? 0 : 2),
-                  // Zielony jeśli index < progress, szary jeśli nie
-                  color: index < progress 
-                      ? const Color(0xFF00C853) 
-                      : Colors.grey.shade200,   
-                ),
-              );
-            }),
-          ),
-          
-          const SizedBox(height: 12),
-          
-          // Dolny pasek (Licznik i Przycisk)
-          Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                isCompleted ? 'Ukończono!' : '$remainingDays/$maxProgress dni pozostało',
-                style: TextStyle(
-                  color: isCompleted ? const Color(0xFF00C853) : Colors.grey.shade600,
-                  fontWeight: isCompleted ? FontWeight.bold : FontWeight.bold,
-                  fontSize: 12,
-                ),
-              ),
-              
-              if (isActive && !isCompleted)
-                ElevatedButton(
-                  onPressed: canCheckToday ? onCheckIn : null,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF00C853),
-                    foregroundColor: Colors.white,
-                    disabledBackgroundColor: Colors.grey.shade300,
-                    elevation: 0,
-                  ),
-                  child: Text(canCheckToday ? 'Odhacz dzisiaj' : 'Wróć jutro'),
-                ),
+              Text(title, style: TextStyle(
+                fontSize: 16, 
+                fontWeight: FontWeight.bold,
+                color: isLocked ? Colors.grey : Colors.black87
+              )),
+              if (isLocked) const Icon(Icons.lock, size: 18, color: Colors.grey),
             ],
           ),
+          const SizedBox(height: 12),
+          LinearProgressIndicator(
+            value: percent,
+            backgroundColor: Colors.grey[300],
+            color: isLocked ? Colors.grey : color,
+            minHeight: 10,
+            borderRadius: BorderRadius.circular(5),
+          ),
+          const SizedBox(height: 8),
+          Text("$progress / $total dni", style: const TextStyle(color: Colors.grey, fontSize: 12)),
         ],
       ),
     );
