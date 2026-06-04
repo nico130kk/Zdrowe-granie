@@ -1,137 +1,126 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../services/user_provider.dart';
+import '../models/lesson_data.dart';
 
-class ChallengesScreen extends StatelessWidget {
+class ChallengesScreen extends StatefulWidget {
   const ChallengesScreen({super.key});
 
   @override
+  State<ChallengesScreen> createState() => _ChallengesScreenState();
+}
+
+class _ChallengesScreenState extends State<ChallengesScreen> {
+  final Set<String> _clickedTodayIds = {};
+
+  @override
   Widget build(BuildContext context) {
-    // 1. Podpinamy się pod Magazyn (Provider)
     final userProvider = context.watch<UserProvider>();
     final profile = userProvider.profile;
 
-    // 2. Obsługa ładowania i braku danych
-    if (userProvider.isLoading) {
-      return const Scaffold(
-        body: Center(child: CircularProgressIndicator(color: Colors.green)),
-      );
+    if (userProvider.isLoading || profile == null) {
+      return const Scaffold(body: Center(child: CircularProgressIndicator(color: Colors.green)));
     }
 
-    if (profile == null) {
-      return const Scaffold(
-        body: Center(child: Text("Błąd: Nie można załadować profilu.")),
-      );
-    }
-
-    // 3. Pobranie danych z profilu
-    int bronze = profile.challengesProgress['sol_braz'] ?? 0;
-    int silver = profile.challengesProgress['sol_srebro'] ?? 0;
-    int gold = profile.challengesProgress['sol_zloto'] ?? 0;
-
-    // Logika sprawdzania, czy użytkownik już dziś kliknął
-    bool canClickToday = true;
-    if (profile.lastReviewDate != null) {
-      final now = DateTime.now();
-      final last = profile.lastReviewDate!;
-      if (last.year == now.year && last.month == now.month && last.day == now.day) {
-        canClickToday = false;
-      }
-    }
+    final activeHabits = appNodes.where(
+      (node) => profile.completedLessonsIDs.contains(node.id)
+    ).toList();
 
     return Scaffold(
-      backgroundColor: Colors.grey[100],
+      backgroundColor: const Color(0xFFF0F4F8),
       appBar: AppBar(
-        title: const Text("Twoje Wyzwania", style: TextStyle(fontWeight: FontWeight.bold)),
+        title: const Text("Wyzwania i Medale", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black87)),
         centerTitle: true,
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.transparent,
         elevation: 0,
       ),
-      body: ListView(
-        padding: const EdgeInsets.all(16),
-        children: [
-          _buildChallengeSection(
-            title: "🥉 Brązowy Medal (6 dni)",
-            progress: bronze,
-            total: 6,
-            color: Colors.orange[800]!,
-            isLocked: false,
-          ),
-          const SizedBox(height: 16),
-          _buildChallengeSection(
-            title: "🥈 Srebrny Medal (14 dni)",
-            progress: silver,
-            total: 14,
-            color: Colors.blueGrey[400]!,
-            isLocked: bronze < 6, // Zablokowane póki nie ma brązu
-          ),
-          const SizedBox(height: 16),
-          _buildChallengeSection(
-            title: "🥇 Złoty Medal (30 dni)",
-            progress: gold,
-            total: 30,
-            color: Colors.amber[700]!,
-            isLocked: silver < 14, // Zablokowane póki nie ma srebra
-          ),
-          const SizedBox(height: 32),
-          
-          // GŁÓWNY PRZYCISK AKCJI
-          ElevatedButton(
-            onPressed: canClickToday 
-              ? () => _handleDailyProgress(context, userProvider, bronze, silver, gold)
-              : null, // Przycisk nieaktywny jeśli już kliknięto
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.green,
-              foregroundColor: Colors.white,
-              padding: const EdgeInsets.symmetric(vertical: 16),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      body: activeHabits.isEmpty
+          ? Center(
+              child: Text(
+                "Ukończ pierwszą lekcję na Mapie,\naby odblokować wyzwania!",
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.grey[600], fontSize: 16),
+              ),
+            )
+          : ListView.builder(
+              padding: const EdgeInsets.all(16),
+              itemCount: activeHabits.length,
+              itemBuilder: (context, index) {
+                final node = activeHabits[index];
+                
+                // Pobieramy postępy dla wszystkich 3 medali z danej lekcji
+                int bronze = profile.challengesProgress['${node.id}_braz'] ?? 0;
+                int silver = profile.challengesProgress['${node.id}_srebro'] ?? 0;
+                int gold = profile.challengesProgress['${node.id}_zloto'] ?? 0;
+
+                // 🔥 LOGIKA AWANSU MEDALU 🔥
+                String currentStage = 'braz';
+                int currentProgress = bronze;
+                int currentTotal = 6;
+                Color cardColor = Colors.orange[700]!;
+                String stageName = 'Brązowy';
+
+                if (bronze >= 6) {
+                  if (silver >= 14) {
+                    currentStage = 'zloto';
+                    currentProgress = gold;
+                    currentTotal = 30;
+                    cardColor = Colors.amber[600]!;
+                    stageName = 'Złoty';
+                  } else {
+                    currentStage = 'srebro';
+                    currentProgress = silver;
+                    currentTotal = 14;
+                    cardColor = Colors.blueGrey[400]!;
+                    stageName = 'Srebrny';
+                  }
+                }
+
+                final challengeKey = '${node.id}_$currentStage';
+
+                return _buildHabitCard(
+                  context: context,
+                  challengeKey: challengeKey,
+                  lessonTitle: node.title,
+                  stageName: stageName,
+                  progress: currentProgress,
+                  total: currentTotal,
+                  color: cardColor,
+                  onTap: () {
+                    userProvider.updateChallenge(challengeKey, currentProgress + 1);
+                    setState(() => _clickedTodayIds.add(challengeKey));
+                  },
+                );
+              },
             ),
-            child: Text(
-              canClickToday ? "ODHACZ DZISIEJSZY TRENING" : "WYKONANO DZISIAJ ✅",
-              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-          ),
-          if (!canClickToday)
-            const Padding(
-              padding: EdgeInsets.only(top: 8.0),
-              child: Text("Wróć jutro, aby kontynuować serię!", textAlign: TextAlign.center, style: TextStyle(color: Colors.grey)),
-            ),
-        ],
-      ),
     );
   }
 
-  // LOGIKA ZWIĘKSZANIA PROGRESU
-  void _handleDailyProgress(BuildContext context, UserProvider provider, int b, int s, int g) {
-    if (b < 6) {
-      provider.updateChallenge('sol_braz', b + 1);
-    } else if (s < 14) {
-      provider.updateChallenge('sol_srebro', s + 1);
-    } else if (g < 30) {
-      provider.updateChallenge('sol_zloto', g + 1);
-    }
-    
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text("Świetnie! Postęp zapisany w chmurze ☁️")),
-    );
-  }
-
-  // WIDŻET POJEDYNCZEJ SEKCJI WYZWANIA
-  Widget _buildChallengeSection({
-    required String title, 
-    required int progress, 
-    required int total, 
+  Widget _buildHabitCard({
+    required BuildContext context,
+    required String challengeKey,
+    required String lessonTitle,
+    required String stageName,
+    required int progress,
+    required int total,
     required Color color,
-    required bool isLocked,
+    required VoidCallback onTap,
   }) {
     double percent = progress / total;
-    
+    bool isCompleted = progress >= total;
+    bool isButtonActive = !_clickedTodayIds.contains(challengeKey) && !isCompleted;
+
     return Container(
-      padding: const EdgeInsets.all(16),
+      margin: const EdgeInsets.only(bottom: 16),
+      padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: isLocked ? Colors.grey[200] : Colors.white,
+        color: Colors.white,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10)],
+        border: Border(left: BorderSide(color: color, width: 6)), // Kolorowy pasek z boku
+        boxShadow: [
+          // Złagodzony cień, żeby nie wywalało błędu withOpacity
+          BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 10, offset: const Offset(0, 4))
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -139,24 +128,42 @@ class ChallengesScreen extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(title, style: TextStyle(
-                fontSize: 16, 
-                fontWeight: FontWeight.bold,
-                color: isLocked ? Colors.grey : Colors.black87
-              )),
-              if (isLocked) const Icon(Icons.lock, size: 18, color: Colors.grey),
+              Expanded(
+                child: Text("Nawyk: $lessonTitle", style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              ),
+              Icon(Icons.military_tech, color: color, size: 32),
             ],
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 4),
+          Text("Poziom: Medal $stageName", style: TextStyle(color: color, fontWeight: FontWeight.w600)),
+          const SizedBox(height: 16),
           LinearProgressIndicator(
-            value: percent,
-            backgroundColor: Colors.grey[300],
-            color: isLocked ? Colors.grey : color,
+            value: percent > 1.0 ? 1.0 : percent,
+            backgroundColor: Colors.grey[200],
+            color: color,
             minHeight: 10,
             borderRadius: BorderRadius.circular(5),
           ),
           const SizedBox(height: 8),
-          Text("$progress / $total dni", style: const TextStyle(color: Colors.grey, fontSize: 12)),
+          Text(isCompleted ? "Wyzwanie Ukończone! 🏆" : "Postęp: $progress / $total dni", 
+            style: TextStyle(color: isCompleted ? color : Colors.grey[600], fontWeight: FontWeight.bold)
+          ),
+          const SizedBox(height: 16),
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton(
+              onPressed: isButtonActive ? onTap : null,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: color,
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+              ),
+              child: Text(isCompleted 
+                ? (stageName == 'Złoty' ? "PEŁNE MISTRZOSTWO!" : "AWANS ODBLOKOWANY") 
+                : (isButtonActive ? "ZALICZ DZISIAJ" : "ZROBIONE NA DZIŚ")),
+            ),
+          ),
         ],
       ),
     );

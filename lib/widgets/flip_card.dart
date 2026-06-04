@@ -23,7 +23,7 @@ class _FlipCardWidgetState extends State<FlipCardWidget> {
   Widget _buildCardSide(String text, Color bgColor, Color textColor, {required Key key}) {
     return Container(
       key: key, width: double.infinity, height: double.infinity, padding: const EdgeInsets.all(24),
-      decoration: BoxDecoration(color: bgColor, borderRadius: BorderRadius.circular(20), boxShadow: [BoxShadow(color: Colors.grey.withOpacity(0.3), spreadRadius: 2, blurRadius: 10, offset: const Offset(0, 5))]),
+      decoration: BoxDecoration(color: bgColor, borderRadius: BorderRadius.circular(20), boxShadow: [BoxShadow(color: Colors.grey.withValues(alpha: 0.3), spreadRadius: 2, blurRadius: 10, offset: const Offset(0, 5))]),
       child: Center(child: Text(text, textAlign: TextAlign.center, style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500, color: textColor, height: 1.4))),
     );
   }

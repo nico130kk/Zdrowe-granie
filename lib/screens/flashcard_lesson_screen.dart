@@ -5,7 +5,8 @@ import '../models/lesson_data.dart';
 import '../services/user_provider.dart';
 
 class FlashcardLessonScreen extends StatefulWidget {
-  final Lesson lesson; // Ekran musi wiedzieć, jaką lekcję wyświetla!
+  // 🔥 ZMIANA: Teraz ten ekran przyjmuje MapNode, a nie Lesson!
+  final MapNode lesson; 
 
   const FlashcardLessonScreen({super.key, required this.lesson});
 
@@ -16,18 +17,18 @@ class FlashcardLessonScreen extends StatefulWidget {
 class _FlashcardLessonScreenState extends State<FlashcardLessonScreen> {
   int _currentIndex = 0;
   bool _showQuiz = false;
-  bool _isFlipped = false; // Czy fiszka jest odwrócona
+  bool _isFlipped = false;
   int? _selectedAnswerIndex;
 
   void _nextCard() {
     if (_currentIndex < widget.lesson.flashcards.length - 1) {
       setState(() {
         _currentIndex++;
-        _isFlipped = false; // Resetujemy obrót dla nowej fiszki
+        _isFlipped = false; 
       });
     } else {
       setState(() {
-        _showQuiz = true; // Koniec fiszek, odpalamy quiz!
+        _showQuiz = true; 
       });
     }
   }
@@ -36,7 +37,6 @@ class _FlashcardLessonScreenState extends State<FlashcardLessonScreen> {
     if (_selectedAnswerIndex == null) return;
 
     if (_selectedAnswerIndex == widget.lesson.finalQuiz.correctAnswerIndex) {
-      // DOBRA ODPOWIEDŹ! 
       context.read<UserProvider>().completeLesson(widget.lesson.id);
       
       showDialog(
@@ -44,12 +44,12 @@ class _FlashcardLessonScreenState extends State<FlashcardLessonScreen> {
         barrierDismissible: false,
         builder: (_) => AlertDialog(
           title: const Text("Gratulacje! 🎉"),
-          content: const Text("Test zdany perfekcyjnie. Odblokowano nowe wyzwanie!"),
+          content: const Text("Lekcja ukończona! Odblokowano nowe wyzwania na Twojej ścieżce."),
           actions: [
             ElevatedButton(
               onPressed: () {
-                Navigator.pop(context); // Zamyka pop-up
-                Navigator.pop(context); // Wraca do listy lekcji
+                Navigator.pop(context);
+                Navigator.pop(context);
               },
               child: const Text("Zakończ"),
             )
@@ -57,7 +57,6 @@ class _FlashcardLessonScreenState extends State<FlashcardLessonScreen> {
         ),
       );
     } else {
-      // ZŁA ODPOWIEDŹ
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text("Niestety to zła odpowiedź. Spróbuj jeszcze raz! ❌"),
@@ -69,6 +68,16 @@ class _FlashcardLessonScreenState extends State<FlashcardLessonScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Zabezpieczenie na wypadek braku fiszek (np. w poziomie START)
+    if (widget.lesson.flashcards.isEmpty && !_showQuiz) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        setState(() {
+          _showQuiz = true;
+        });
+      });
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
+    }
+
     return Scaffold(
       backgroundColor: Colors.grey[100],
       appBar: AppBar(
@@ -83,7 +92,6 @@ class _FlashcardLessonScreenState extends State<FlashcardLessonScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              // Pasek postępu u góry
               LinearProgressIndicator(
                 value: _showQuiz ? 1.0 : (_currentIndex + 1) / (widget.lesson.flashcards.length + 1),
                 backgroundColor: Colors.grey[300],
@@ -91,15 +99,10 @@ class _FlashcardLessonScreenState extends State<FlashcardLessonScreen> {
                 minHeight: 8,
               ),
               const SizedBox(height: 32),
-
-              // GŁÓWNY WIDOK: FISZKA ALBO QUIZ
               Expanded(
                 child: _showQuiz ? _buildQuizView() : _buildFlashcardView(),
               ),
-
               const SizedBox(height: 24),
-
-              // PRZYCISK DALEJ / SPRAWDŹ
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.green,
@@ -108,8 +111,8 @@ class _FlashcardLessonScreenState extends State<FlashcardLessonScreen> {
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                 ),
                 onPressed: _showQuiz 
-                  ? (_selectedAnswerIndex != null ? _checkAnswer : null) // W quizie sprawdza odpowiedź
-                  : _nextCard, // W fiszkach idzie dalej
+                  ? (_selectedAnswerIndex != null ? _checkAnswer : null) 
+                  : _nextCard, 
                 child: Text(
                   _showQuiz ? "SPRAWDŹ ODPOWIEDŹ" : "DALEJ",
                   style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -122,12 +125,12 @@ class _FlashcardLessonScreenState extends State<FlashcardLessonScreen> {
     );
   }
 
-  // ================= TRYB FISZKI =================
   Widget _buildFlashcardView() {
+    if (widget.lesson.flashcards.isEmpty) return const SizedBox();
     final card = widget.lesson.flashcards[_currentIndex];
     
     return GestureDetector(
-      onTap: () => setState(() => _isFlipped = !_isFlipped), // Kliknięcie obraca fiszkę
+      onTap: () => setState(() => _isFlipped = !_isFlipped),
       child: AnimatedSwitcher(
         duration: const Duration(milliseconds: 300),
         transitionBuilder: (Widget child, Animation<double> animation) {
@@ -172,10 +175,7 @@ class _FlashcardLessonScreenState extends State<FlashcardLessonScreen> {
                   style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w500),
                 ),
                 const Spacer(),
-                Text(
-                  "Dotknij, aby odwrócić",
-                  style: TextStyle(color: Colors.grey[500]),
-                )
+                Text("Dotknij, aby odwrócić", style: TextStyle(color: Colors.grey[500]))
               ],
             ),
           ),
@@ -184,26 +184,15 @@ class _FlashcardLessonScreenState extends State<FlashcardLessonScreen> {
     );
   }
 
-  // ================= TRYB QUIZU =================
   Widget _buildQuizView() {
     final quiz = widget.lesson.finalQuiz;
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        const Text(
-          "Czas na test!",
-          textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.green),
-        ),
+        const Text("Czas na test!", textAlign: TextAlign.center, style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.green)),
         const SizedBox(height: 24),
-        Text(
-          quiz.question,
-          textAlign: TextAlign.center,
-          style: const TextStyle(fontSize: 20),
-        ),
+        Text(quiz.question, textAlign: TextAlign.center, style: const TextStyle(fontSize: 20)),
         const SizedBox(height: 32),
-        // Generujemy guziki z odpowiedziami
         ...List.generate(quiz.options.length, (index) {
           final isSelected = _selectedAnswerIndex == index;
           return Padding(

@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart'; // Importujemy rdzeń Firebase
-import 'firebase_options.dart'; // Importujemy wygenerowany plik z opcjami
-import 'screens/main_screen.dart'; // Importujemy Twój główny ekran
 import 'package:provider/provider.dart';
 import 'services/user_provider.dart';
+import 'screens/main_screen.dart';
 
-void main() async {
+void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-
+  // Brak Firebase - apka startuje natychmiast, całkowicie offline!
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => UserProvider(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => UserProvider()),
+      ],
       child: const MyApp(),
     ),
   );
@@ -23,12 +22,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Zdrofit App',
+      title: 'Zdrofit',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
-        useMaterial3: true,
-        scaffoldBackgroundColor: Colors.white,
+        primarySwatch: Colors.green,
+        scaffoldBackgroundColor: Colors.grey[100],
       ),
       home: const MainScreen(),
     );

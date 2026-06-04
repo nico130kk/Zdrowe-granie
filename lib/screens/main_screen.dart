@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart'; // PAMIĘTAJ O TYM IMPORCIE!
+import 'package:provider/provider.dart';
 import '../services/user_provider.dart';
 import 'lessons_screen.dart';
 import 'challenge_screen.dart';
-import 'profile_screen.dart';
+import 'profile_screen.dart'; // 🔥 DODANY IMPORT!
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -14,20 +14,20 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0;
+
   @override
   void initState() {
     super.initState();
-    // Odpalamy ładowanie usera raz na całą sesję
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<UserProvider>().loadUser("user_123");
+      // Ponieważ nie mamy Firebase'a, uid "local_user" wystarczy
+      context.read<UserProvider>().loadUser("local_user");
     });
   }
-  
 
   static const List<Widget> _screens = <Widget>[
     LessonsScreen(),
     ChallengesScreen(),
-    ProfileScreen(),
+    ProfileScreen(), // 🔥 PODPIĘTY EKRAN PROFILU!
   ];
 
   void _onItemTapped(int index) {
@@ -43,15 +43,15 @@ class _MainScreenState extends State<MainScreen> {
         child: _screens.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: Container(
-        decoration: const BoxDecoration(
-          border: Border(top: BorderSide(color: Colors.grey, width: 0.5)),
+        decoration: BoxDecoration(
+          boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 10, offset: const Offset(0, -5))],
         ),
         child: BottomNavigationBar(
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
-              icon: Icon(Icons.menu_book_outlined),
-              activeIcon: Icon(Icons.menu_book),
-              label: 'Lekcje',
+              icon: Icon(Icons.explore_outlined),
+              activeIcon: Icon(Icons.explore),
+              label: 'Mapa',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.emoji_events_outlined),
@@ -65,7 +65,7 @@ class _MainScreenState extends State<MainScreen> {
             ),
           ],
           currentIndex: _selectedIndex,
-          selectedItemColor: const Color(0xFF00C853),
+          selectedItemColor: Colors.blueAccent,
           unselectedItemColor: Colors.grey,
           showSelectedLabels: true,
           showUnselectedLabels: true,

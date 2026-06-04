@@ -1,22 +1,31 @@
-import 'package:flutter/material.dart';
-
 class UserProfile {
-  final String uid;
+  final String uid; // Zostawiamy dla porządku, będzie po prostu "local_user"
   int streak;
   DateTime? lastReviewDate;
   List<String> completedLessonsIDs;
-  Map<String, int> challengesProgress; // Nowość: trzymamy tu postęp każdego wyzwania
+  Map<String, int> challengesProgress;
 
   UserProfile({
     required this.uid,
-    this.streak = 0,
+    required this.streak,
     this.lastReviewDate,
-    this.completedLessonsIDs = const [],
-    this.challengesProgress = const {},
+    required this.completedLessonsIDs,
+    required this.challengesProgress,
   });
 
-  // Konwersja na mapę do Firebase
-  Map<String, dynamic> toMap() {
+  // Tłumaczenie z JSONa (Odczyt z dysku)
+  factory UserProfile.fromJson(Map<String, dynamic> json) {
+    return UserProfile(
+      uid: json['uid'],
+      streak: json['streak'],
+      lastReviewDate: json['lastReviewDate'] != null ? DateTime.parse(json['lastReviewDate']) : null,
+      completedLessonsIDs: List<String>.from(json['completedLessonsIDs']),
+      challengesProgress: Map<String, int>.from(json['challengesProgress']),
+    );
+  }
+
+  // Tłumaczenie na JSONa (Zapis na dysk)
+  Map<String, dynamic> toJson() {
     return {
       'uid': uid,
       'streak': streak,
@@ -24,18 +33,5 @@ class UserProfile {
       'completedLessonsIDs': completedLessonsIDs,
       'challengesProgress': challengesProgress,
     };
-  }
-
-  // Tworzenie obiektu z danych z Firebase
-  factory UserProfile.fromMap(Map<String, dynamic> map) {
-    return UserProfile(
-      uid: map['uid'] ?? '',
-      streak: map['streak'] ?? 0,
-      lastReviewDate: map['lastReviewDate'] != null 
-          ? DateTime.parse(map['lastReviewDate']) 
-          : null,
-      completedLessonsIDs: List<String>.from(map['completedLessonsIDs'] ?? []),
-      challengesProgress: Map<String, int>.from(map['challengesProgress'] ?? {}),
-    );
   }
 }
