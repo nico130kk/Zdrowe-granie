@@ -1,0 +1,305 @@
+{
+  "topics": [
+    {
+      "id": "dieta",
+      "name": "Dieta i Talerz",
+      "flashcards": [
+        "1. Zmiana diety jest trudna. Wiąże się z kolejnymi wyzwaniami, które zmieniają Nasze podejście do całego życia.\n\nDobrym początkiem jest Talerz Zdrowego Odżywiania, który mówi nam dokładnie jak zmienić swoje nawyki żywieniowe i zdrowotne.",
+        "2. Talerz mówi nam o tym, że nasze posiłki powinny składać się z trzech głównych kategorii:\n\na. Owoce i warzywa\nb. Produkty zbożowe\nc. Orzechy / Nabiał / Produkty zwierzęce",
+        "3. Owoce i warzywa mówią same za siebie, są to np. marchewki, jabłka czy też nawet kapusta.\n\nWarzywa i owoce spożywaj jak najczęściej i w jak największej ilości, co najmniej połowę tego co jesz.\n\nPamiętaj o właściwych proporcjach: 3/4 - warzywa i 1/4 - owoce.",
+        "4. Produkty zbożowe to np. chleby, płatki owsiane czy też kasza. Powinny być 1/4 tego co jesz.\n\nZawsze staraj się spożywać produkty pełnoziarniste w tej kategorii.",
+        "5. Ostatnia kategoria to mieszanina wysoko tłuszczowych i wysokokalorycznych składników takich jak ryby, mięso, nabiał (czyli produkty mleczne) oraz orzechy.\n\nTa część powinna stanowić 1/4 tego co jesz. Zawsze staraj się kupować produkty jak najmniej przetworzone w tej kategorii!",
+        "6. Talerz wspomina również o rzeczach, które możemy zapomnieć, a które są nie mniej ważne!\n\na. Pij dużo wody (minimalnie 1,5 litra dziennie)\nb. Bądź aktywny fizycznie każdego dnia\nc. Jedz regularnie (od 4 do 5 posiłków dziennie) i nie jedz bezpośrednio przed snem"
+      ],
+      "challenges": {
+        "bronze": { "text": "Zapoznaj się z ideą Talerza Zdrowego Żywienia. Przeczytaj zasady.", "days": 1 }
+      }
+    },
+    {
+      "id": "warzywa_owoce",
+      "name": "Warzywa i Owoce",
+      "flashcards": [
+        "1. Warzywa i owoce to jedna z najważniejszych grup produktów w zdrowym żywieniu.\n\nDostarczają witamin, składników mineralnych, błonnika i związków bioaktywnych, które wspierają prawidłowe funkcjonowanie organizmu i chronią przed chorobami cywilizacyjnymi.\n\nPowinny stanowić podstawę codziennej diety.",
+        "2. Znaczenie warzyw i owoców:\nStwierdzono, że regularne spożywanie owoców i warzyw takich jak: jabłka/gruszki, owoce cytrusowe, warzywa kapustne, zielone warzywa liściaste, pomidory oraz owoce i warzywa bogate w beta-karoten i witaminę C zmniejszało ryzyko choroby niedokrwiennej serca, udaru mózgu lub chorób układu krążenia.",
+        "3. Co dostarczają warzywa i owoce?\n\na. Witaminy: witamina C, beta-karoten, witaminy z grupy B, witamina K, kwas foliowy.\nb. Składniki mineralne: potas, magnez, wapń, żelazo.\nc. Błonnik pokarmowy: wspiera pracę jelit, zwiększa uczucie sytości.\nd. Antyoksydanty: chronią komórki przed stresem oksydacyjnym.",
+        "4. Warzywa a owoce - które są ważniejsze?\n\nWarzywa zawierają mniej cukru oraz kalorii. Zawierają natomiast dużo błonnika. Owoce z kolei mają większe ilości naturalnych cukrów oraz duże zapasy energetyczne.\n\nZ tych powodów warzywa powinny być generalnie częściej spożywane od owoców.",
+        "5. Ile warzyw i owoców dziennie?\n\nZaleca się spożywanie minimum 400 g warzyw i owoców dziennie, najlepiej przy każdym posiłku.",
+        "6. Uwaga: Czy sok może zastąpić porcję owocu?\n\nOdpowiedź: Częściowo tak. Szklanka 100% soku dostarcza witamin, jednak zwykle zawiera znacznie mniej błonnika. Oznacza to, że nie jest jego pełnowartościowym zamiennikiem i nie daje takiego samego uczucia sytości."
+      ],
+      "challenges": {
+        "bronze": { "text": "Zjedz warzywo lub owoc w każdym posiłku.", "days": 4 },
+        "silver": { "text": "Jedz minimum 200 g warzyw i owoców codziennie.", "days": 10 },
+        "gold": { "text": "Jedz minimum 400 g warzyw i owoców codziennie - więcej warzyw niż owoców.", "days": 21 }
+      },
+      "quiz": [
+        {
+          "question": "Prawda/Fałsz: Kolor warzywa lub owocu ma bezpośrednie przełożenie na jego właściwości prozdrowotne.",
+          "options": ["Prawda", "Fałsz"],
+          "correctAnswerIndex": 0
+        },
+        {
+          "question": "Ile gramów warzyw i owoców powinno jeść się w ciągu jednego dnia?",
+          "options": ["200g", "300g", "400g", "500g"],
+          "correctAnswerIndex": 2
+        },
+        {
+          "question": "Prawda/Fałsz: Szklanka 100% soku może w pełni zastąpić porcję owocu.",
+          "options": ["Prawda", "Fałsz"],
+          "correctAnswerIndex": 1
+        }
+      ]
+    },
+    {
+      "id": "produkty_zbozowe",
+      "name": "Produkty zbożowe",
+      "flashcards": [
+        "1. Produkty zbożowe stanowią podstawę żywienia w wielu kulturach i są jednym z głównych źródeł energii w diecie człowieka.\n\n2. Produkty zbożowe powstają z nasion roślin takich jak:\na. pszenica\nb. żyto\nc. jęczmień\nd. owies\ne. kukurydza\nf. ryż\ng. orkisz",
+        "3. Produkty z pełnego ziarna są źródłem błonnika pokarmowego, węglowodanów złożonych, witamin z grupy B, a także składników mineralnych.\n\nWiększość składników mineralnych znajduje się tuż pod okrywą owocowo-nasienną, która jest usuwana w procesie oczyszczania.",
+        "4. Najważniejsze jest odróżnienie produktów zbożowych przetworzonych od pełnoziarnistych.\n\nProdukty pełnoziarniste powstają z całego ziarna (łuska + zarodek + bielmo) i są znacznie zdrowsze od produktów rafinowanych, które powstają z samego bielma.",
+        "5. Przykłady produktów pełnoziarnistych (co kupować):\na. chleb razowy\nb. makaron pełnoziarnisty\nc. brązowy ryż\nd. kasza gryczana, jęczmienna\ne. płatki owsiane",
+        "6. Przykłady produktów przetworzonych (czego unikać):\na. białe pieczywo\nb. biały ryż\nc. jasne makarony\nd. drobne kasze\ne. płatki kukurydziane"
+      ],
+      "challenges": {
+        "bronze": { "text": "Zamień pieczywo przetworzone na pełnoziarniste (np. razowe). Wybieraj grube kasze.", "days": 5 },
+        "silver": { "text": "Jedz codziennie przynajmniej 3 porcje produktów zbożowych pełnoziarnistych (90g/dzień).", "days": 12 },
+        "gold": { "text": "Jedz produkty zbożowe pełnoziarniste w każdym posiłku.", "days": 25 }
+      },
+      "quiz": [
+        {
+          "question": "Prawda/Fałsz: Produkty pełnoziarniste zawierają mniej składników mineralnych niż produkty zbożowe przetworzone.",
+          "options": ["Prawda", "Fałsz"],
+          "correctAnswerIndex": 1
+        },
+        {
+          "question": "Wskaż produkt, który nie jest pełnoziarnisty:",
+          "options": ["Biały ryż", "Chleb razowy", "Kasza gryczana", "Płatki owsiane"],
+          "correctAnswerIndex": 0
+        },
+        {
+          "question": "Z jakich części ziarna powstają zdrowsze produkty pełnoziarniste?",
+          "options": ["Z samego bielma", "Z łuski, zarodka i bielma", "Wyłącznie z oczyszczonej zewnętrznej okrywy"],
+          "correctAnswerIndex": 1
+        }
+      ]
+    },
+    {
+      "id": "mleko_nabial",
+      "name": "Mleko i przetwory",
+      "flashcards": [
+        "1. Mleko i przetwory mleczne to ważna grupa produktów. Dostarczają białka, wapnia oraz wielu witamin.\n\n2. Przetwory to wyroby mające początek w mleku. Mogą być nimi jogurty, kefiry, sery (dojrzewające i twarogowe) oraz lody śmietankowe!",
+        "3. Do „najcenniejszych\" składników zaliczamy: łatwo przyswajalne białko, wapń oraz witaminy z grupy B, witaminy rozpuszczalne w tłuszczach i bakterie kwasu mlekowego (np. w kefirze).",
+        "4. Przyjmuje się, że dziennie powinno się spożywać 2-3 porcje nabiału, które pokrywają do 80% zapotrzebowania na wapń.\n\nJedna porcja to np. 1 szklanka mleka/kefiru, plaster żółtego sera lub kawałek twarogu.",
+        "5. Gdy kupujemy jogurty, kefiry czy maślanki naturalne, powinniśmy wybierać produkty bez dodatkowych składników smakowych (unikamy cukru i barwników).\n\n6. Alternatywy dla nabiału to np. napoje sojowe, migdałowe czy owsiane wzbogacone w wapń."
+      ],
+      "challenges": {
+        "bronze": { "text": "Mleko i produkty mleczne pełnotłuste zastąp tymi o obniżonej zawartości tłuszczu.", "days": 3 },
+        "silver": { "text": "Spożywaj 1 porcję nabiału (np. 1 szklankę mleka) dziennie. Możesz to zastąpić kefirem lub twarogiem.", "days": 7 },
+        "gold": { "text": "Spożywaj 2 porcje nabiału dziennie.", "days": 14 }
+      },
+      "quiz": [
+        {
+          "question": "Ile porcji nabiału dziennie zaleca się spożywać, aby pokryć większość zapotrzebowania na wapń?",
+          "options": ["1 porcję", "2-3 porcje", "Minimum 5 porcji", "Nabiału należy całkowicie unikać"],
+          "correctAnswerIndex": 1
+        },
+        {
+          "question": "Prawda/Fałsz: Bakterie kwasu mlekowego obecne w produktach fermentowanych (np. kefir, jogurt) wywierają korzystny wpływ na mikroflorę naszych jelit.",
+          "options": ["Prawda", "Fałsz"],
+          "correctAnswerIndex": 0
+        },
+        {
+          "question": "Jakie produkty mleczne dietetycy radzą wybierać podczas zakupów?",
+          "options": ["Gotowe jogurty owocowe o dowolnym smaku", "Sery topione i mocno przetworzone desery mleczne", "Produkty naturalne, bez dodatkowych składników smakowych i cukru"],
+          "correctAnswerIndex": 2
+        }
+      ]
+    },
+    {
+      "id": "bialko",
+      "name": "Źródła Białka",
+      "flashcards": [
+        "Do źródeł białka zaliczamy nasiona roślin strączkowych, mięso, ryby, mleko i produkty mleczne oraz ich roślinne zamienniki wzbogacane w wapń, jaja, a także orzechy, pestki i nasiona.\n\nStaraj się jadać te produkty naprzemiennie, dzięki czemu zadbasz o różnorodność na talerzu."
+      ]
+    },
+    {
+      "id": "mieso",
+      "name": "Mięso",
+      "flashcards": [
+        "1. Mięso można podzielić na kilka grup:\na. Czerwone (wołowina, wieprzowina)\nb. Białe (drób)\nc. Przetwory mięsne (wędliny, kiełbasy).",
+        "2. Mięso jest bogate w białko pełnowartościowe, żelazo hemowe, witaminę B12 oraz cynk.",
+        "3. Sposoby obróbki mięsa:\n\nNajzdrowsze metody: gotowanie, duszenie, pieczenie.\nMniej korzystne: smażenie, grillowanie w wysokiej temperaturze.",
+        "4. Ważną częścią diety jest jak największe ograniczenie mięsa czerwonego oraz przetworów mięsnych. Te mogą powodować zwiększone ryzyko chorób układu krążenia.",
+        "5. Mięso można zastąpić np. roślinami strączkowymi, rybami, orzechami czy jajami."
+      ],
+      "challenges": {
+        "bronze": { "text": "Wprowadź dwa dni w tygodniu bez mięsa.", "days": 2 },
+        "silver": { "text": "Nie jedz więcej niż 500 g mięsa czerwonego i przetworów mięsnych na tydzień.", "days": 7 },
+        "gold": { "text": "Zamień całkowicie przetwory mięsne na drób, ryby, rośliny strączkowe i jaja.", "days": 21 }
+      },
+      "quiz": [
+        {
+          "question": "Do jakiej grupy mięsa zaliczamy wieprzowinę i wołowinę oraz jakie ryzyko niesie ich nadmiar?",
+          "options": ["Do mięsa czerwonego; nadmiar zwiększa ryzyko chorób sercowo-naczyniowych i sprzyja otyłości", "Do mięsa białego; nie niesie żadnego ryzyka", "Do ogólnych przetworów; chroni przed utratą energii"],
+          "correctAnswerIndex": 0
+        },
+        {
+          "question": "Prawda/Fałsz: Smażenie i grillowanie mięsa w wysokich temperaturach to najzdrowsze formy obróbki termicznej.",
+          "options": ["Prawda", "Fałsz"],
+          "correctAnswerIndex": 1
+        },
+        {
+          "question": "Czym można z powodzeniem zastąpić mięso w diecie?",
+          "options": ["Białym pieczywem i drobnymi kaszami", "Wyłącznie wodą smakową", "Nasionami roślin strączkowych, rybami, jajami i orzechami"],
+          "correctAnswerIndex": 2
+        }
+      ]
+    },
+    {
+      "id": "ryby",
+      "name": "Ryby",
+      "flashcards": [
+        "1. Ryby dostarczają białka, tłuszczów, witamin A i D oraz witamin z grupy B.",
+        "2. Do niezwykle cennych składników należą wielonienasycone kwasy tłuszczowe (EPA i DHA), które są niemal unikalne dla ryb.",
+        "3. Światowa Organizacja Zdrowia (WHO) rekomenduje spożywanie 1-2 porcji ryb tygodniowo, przy czym jedną z tych porcji powinna stanowić ryba tłusta (np. łosoś, śledź)."
+      ],
+      "challenges": {
+        "bronze": { "text": "Zjedz rybę raz w tygodniu, najlepiej tłustą (np. łosoś, śledź).", "days": 1 },
+        "silver": { "text": "Jedz ryby 2 razy w tygodniu, w tym przynajmniej raz rybę tłustą.", "days": 4 },
+        "gold": { "text": "Jedz różnorodne tłuste ryby 2 razy w tygodniu.", "days": 8 }
+      },
+      "quiz": [
+        {
+          "question": "Które wymienione składniki odżywcze są niemal unikalne dla ryb?",
+          "options": ["Kwasy tłuszczowe EPA i DHA (omega-3)", "Witamina B1 oraz duże ilości żelaza niehemowego", "Kwas foliowy i węglowodany złożone"],
+          "correctAnswerIndex": 0
+        },
+        {
+          "question": "Ile ryb tygodniowo powinniśmy zjadać zgodnie z rekomendacjami?",
+          "options": ["Około 1 kg na dobę", "Ryby wystarczy jeść raz na miesiąc", "1-2 porcje (ok. 150-300 g), w tym przynajmniej raz rybę tłustą"],
+          "correctAnswerIndex": 2
+        }
+      ]
+    },
+    {
+      "id": "jaja",
+      "name": "Jaja",
+      "flashcards": [
+        "1. Jaja zawierają pełnowartościowe białko uważane za wzorcowe. Są dobrym źródłem witamin A, D, B12 oraz żelaza.",
+        "2. Wokół spożywania jaj istnieje sporo kontrowersji ze względu na cholesterol. Jednak najnowsze badania pokazują, że duży wpływ ma nasza genetyka.",
+        "3. Za rozsądne uznaje się spożywanie do 7 jaj tygodniowo (uwzględniając też te ukryte w ciastach czy makaronach!)."
+      ],
+      "challenges": {
+        "bronze": { "text": "Jedz do 7 jajek tygodniowo.", "days": 7 },
+        "silver": { "text": "Wykorzystaj zamiennik jajka w 1 potrawie (np. siemię lniane).", "days": 3 },
+        "gold": { "text": "Utrzymaj balans: do 7 jaj tygodniowo przez miesiąc.", "days": 30 }
+      },
+      "quiz": [
+        {
+          "question": "Co według najnowszych doniesień naukowych ma kluczowy wpływ na to, jak mocno cholesterol z pożywienia wchłania się do naszego organizmu?",
+          "options": ["Poranna porcja kawy", "Nasze geny", "Kolor skorupki jajka"],
+          "correctAnswerIndex": 1
+        },
+        {
+          "question": "Prawda/Fałsz: Limit do 7 jaj tygodniowo dotyczy wszystkich jaj włącznie z tymi ukrytymi w makaronach, ciastach czy naleśnikach.",
+          "options": ["Prawda", "Fałsz"],
+          "correctAnswerIndex": 0
+        },
+        {
+          "question": "Co może posłużyć za roślinny zamiennik jaja w przepisie kulinarnym?",
+          "options": ["Masło zwierzęce lub smalec", "Płatki kukurydziane i biały ryż", "Mielony len, nasiona chia, agar lub mus jabłkowy"],
+          "correctAnswerIndex": 2
+        }
+      ]
+    },
+    {
+      "id": "straczkowe",
+      "name": "Strączkowe",
+      "flashcards": [
+        "1. Nasiona roślin strączkowych są dobrą alternatywą dla mięsa. Zawierają ok. 25% białka.",
+        "2. Częściowe zastąpienie białka zwierzęcego roślinnym to świetna profilaktyka chorób układu krążenia.",
+        "3. Regularne spożywanie roślin strączkowych obniża stężenie cholesterolu całkowitego we krwi.",
+        "4. Pamiętaj o odpowiednim moczeniu suchych nasion w zimnej wodzie przed ugotowaniem, co poprawia ich strawność i zapobiega wzdęciom!"
+      ],
+      "challenges": {
+        "bronze": { "text": "W jednym posiłku w tygodniu zastąp połowę mięsa nasionami roślin strączkowych.", "days": 2 },
+        "silver": { "text": "W jednym posiłku w tygodniu zastąp całość mięsa nasionami roślin strączkowych.", "days": 4 },
+        "gold": { "text": "W dwóch posiłkach w tygodniu zastąp całość mięsa nasionami roślin strączkowych.", "days": 10 }
+      },
+      "quiz": [
+        {
+          "question": "Prawda/Fałsz: Odpowiednia obróbka kulinarna (moczenie, a następnie gotowanie początkowo bez przykrycia) zmniejsza zawartość substancji wzdymających i poprawia strawność strączków.",
+          "options": ["Prawda", "Fałsz"],
+          "correctAnswerIndex": 0
+        },
+        {
+          "question": "Jakie produkty zaliczamy do grupy nasion roślin strączkowych?",
+          "options": ["Arachidy, pistacje i migdały", "Soczewicę, groch, ciecierzycę, fasolę, soję oraz bób", "Otręby owsiane i kaszę gryczaną"],
+          "correctAnswerIndex": 1
+        }
+      ]
+    },
+    {
+      "id": "orzechy",
+      "name": "Orzechy",
+      "flashcards": [
+        "1. Orzechy, pestki i nasiona to dobre źródło białka i nienasyconych kwasów tłuszczowych. Orzechy włoskie i nasiona lnu to potęga Omega-3!",
+        "2. Zmniejszają ryzyko chorób krążenia, obniżają ciśnienie, spowalniają procesy starzenia i poprawiają pamięć.",
+        "3. Zaleca się spożycie garści (ok. 30g) orzechów, pestek lub nasion dziennie."
+      ],
+      "challenges": {
+        "bronze": { "text": "Jedz garść orzechów dziennie przez 3 dni.", "days": 3 },
+        "silver": { "text": "Jedz garść orzechów dziennie przez 5 dni.", "days": 5 },
+        "gold": { "text": "Jedz garść orzechów dziennie przez tydzień.", "days": 7 }
+      },
+      "quiz": [
+        {
+          "question": "Jaka porcja orzechów, pestek lub nasion jest rekomendowana do spożycia każdego dnia?",
+          "options": ["Jedna garść (ok. 30 g)", "Minimum 200 g", "Dokładnie jedna łyżeczka oleju z nasion"],
+          "correctAnswerIndex": 0
+        },
+        {
+          "question": "Prawda/Fałsz: Orzechy włoskie i nasiona lnu są doskonałym źródłem kwasów tłuszczowych omega-3 o właściwościach przeciwzapalnych.",
+          "options": ["Prawda", "Fałsz"],
+          "correctAnswerIndex": 0
+        },
+        {
+          "question": "Które orzechy charakteryzują się największą zawartością białka?",
+          "options": ["Orzechy kokosowe i tropikalne", "Orzechy arachidowe, migdały i pistacje", "Orzechy laskowe i nerkowce"],
+          "correctAnswerIndex": 1
+        }
+      ]
+    },
+    {
+      "id": "tluszcze",
+      "name": "Tłuszcze",
+      "flashcards": [
+        "1. Uzupełnieniem codziennej diety powinna być niewielka ilość tłuszczu roślinnego (oliwa z oliwek, olej rzepakowy, olej lniany).",
+        "2. Olej lniany stosuj wyłącznie na zimno! Do smażenia wybieraj oliwę z oliwek lub olej rzepakowy.",
+        "3. Unikaj olejów tropikalnych (kokosowy, palmowy) oraz tłuszczów utwardzonych (fast-food, wyroby cukiernicze).",
+        "4. Tłuszcze pochodzenia zwierzęcego (masło, smalec) zawierają dużo nasyconych kwasów tłuszczowych i cholesterolu. Należy je ograniczać."
+      ],
+      "challenges": {
+        "bronze": { "text": "Ogranicz spożycie tłustych mięs, wędlin, tłustych produktów mlecznych.", "days": 5 },
+        "silver": { "text": "Zrezygnuj ze spożycia tłustych mięs i serów topionych.", "days": 14 },
+        "gold": { "text": "Tłuszcze pochodzenia zwierzęcego zamień na tłuszcze roślinne (np. oliwę z oliwek).", "days": 21 }
+      },
+      "quiz": [
+        {
+          "question": "Który olej roślinny powinien być stosowany wyłącznie na zimno ze względu na szybkie utlenianie kwasów tłuszczowych podczas podgrzewania?",
+          "options": ["Olej rzepakowy", "Oliwa z oliwek", "Olej lniany"],
+          "correctAnswerIndex": 2
+        },
+        {
+          "question": "Prawda/Fałsz: Oleje tropikalne (kokosowy i palmowy) są zalecane w zdrowej diecie jako najlepsze źródło wielonienasyconych dobrych tłuszczów.",
+          "options": ["Prawda", "Fałsz"],
+          "correctAnswerIndex": 1
+        },
+        {
+          "question": "Dlaczego zaleca się unikanie tłuszczów pochodzenia zwierzęcego, takich jak masło czy smalec?",
+          "options": ["Ponieważ zawierają szkodliwe sztuczne barwniki i karmel", "Dostarczają dużo nasyconych kwasów tłuszczowych oraz cholesterolu, co zwiększa ryzyko chorób układu krążenia i nowotworów", "Ponieważ całkowicie wypłukują witaminy z grupy B i witaminę C"],
+          "correctAnswerIndex": 1
+        }
+      ]
+    }
+  ]
+}

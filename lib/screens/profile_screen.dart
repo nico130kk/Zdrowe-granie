@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../services/user_provider.dart';
+import 'daily_review_screen.dart'; // 🆕 NOWY IMPORT!
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -14,11 +15,28 @@ class ProfileScreen extends StatelessWidget {
       return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
 
-    // 🏆 LICZENIE MEDALI 🏆
-    // Szukamy w słowniku postępów tych, które mają max dni (brąz=6, srebro=14, złoto=30)
-    int countBronze = profile.challengesProgress.entries.where((e) => e.key.endsWith('_braz') && e.value >= 6).length;
-    int countSilver = profile.challengesProgress.entries.where((e) => e.key.endsWith('_srebro') && e.value >= 14).length;
-    int countGold = profile.challengesProgress.entries.where((e) => e.key.endsWith('_zloto') && e.value >= 30).length;
+    // Dynamic medal counting
+    int countBronze = 0;
+    int countSilver = 0;
+    int countGold = 0;
+
+    for (var entry in profile.challengesProgress.entries) {
+      String stage = entry.key.endsWith('_braz') ? 'braz' : (entry.key.endsWith('_srebro') ? 'srebro' : 'zloto');
+      String lessonId = entry.key.replaceAll('_$stage', '');
+
+      final content = userProvider.lessonContents[lessonId];
+      if (content == null) continue;
+
+      int reqBronze = content['challenges']?['bronze']?['days'] ?? 6;
+      int reqSilver = content['challenges']?['silver']?['days'] ?? 14;
+      int reqGold = content['challenges']?['gold']?['days'] ?? 30;
+
+      if (stage == 'braz' && entry.value >= reqBronze) countBronze++;
+      if (stage == 'srebro' && entry.value >= reqSilver) countSilver++;
+      if (stage == 'zloto' && entry.value >= reqGold) countGold++;
+    }
+
+    bool isReviewDone = userProvider.isDailyReviewDone;
 
     return Scaffold(
       backgroundColor: const Color(0xFFF0F4F8),
@@ -32,7 +50,6 @@ class ProfileScreen extends StatelessWidget {
         padding: const EdgeInsets.all(24.0),
         child: Column(
           children: [
-            // AVATAR I NICK
             const CircleAvatar(
               radius: 50,
               backgroundColor: Colors.blueAccent,
@@ -45,7 +62,7 @@ class ProfileScreen extends StatelessWidget {
             
             const SizedBox(height: 32),
 
-            // KARTA STREAKA
+            // Karta Streaka
             Container(
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
@@ -68,6 +85,40 @@ class ProfileScreen extends StatelessWidget {
                 ],
               ),
             ),
+            
+            const SizedBox(height: 16),
+            
+            // 🔥 PRZYCISK CODZIENNEJ POWTÓRKI 🔥
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton.icon(
+                onPressed: isReviewDone ? null : () {
+                  final questions = userProvider.getRandomReviewQuestions();
+                  if (questions.isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("Brak pytań! Ukończ na mapie lekcje, które mają quizy."))
+                    );
+                    return;
+                  }
+                  // Odpalamy nowy ekran z pulą pytań
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => DailyReviewScreen(questions: questions)),
+                  );
+                },
+                icon: Icon(isReviewDone ? Icons.check_circle : Icons.refresh, color: Colors.white),
+                label: Text(
+                  isReviewDone ? "Powtórka na dziś zrobiona!" : "Wykonaj Codzienną Powtórkę",
+                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blueAccent,
+                  disabledBackgroundColor: Colors.grey[400],
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                ),
+              ),
+            ),
 
             const SizedBox(height: 32),
             const Align(
@@ -76,7 +127,6 @@ class ProfileScreen extends StatelessWidget {
             ),
             const SizedBox(height: 16),
 
-            // GABLOTA MEDALI
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

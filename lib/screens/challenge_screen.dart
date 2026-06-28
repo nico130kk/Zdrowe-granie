@@ -11,6 +11,7 @@ class ChallengesScreen extends StatefulWidget {
 }
 
 class _ChallengesScreenState extends State<ChallengesScreen> {
+  // Local memory for clicked IDs in current session
   final Set<String> _clickedTodayIds = {};
 
   @override
@@ -22,9 +23,12 @@ class _ChallengesScreenState extends State<ChallengesScreen> {
       return const Scaffold(body: Center(child: CircularProgressIndicator(color: Colors.green)));
     }
 
-    final activeHabits = appNodes.where(
-      (node) => profile.completedLessonsIDs.contains(node.id)
-    ).toList();
+    // Filter to show only completed lessons THAT HAVE challenges
+    final activeHabits = appNodes.where((node) {
+      if (!profile.completedLessonsIDs.contains(node.id)) return false;
+      final content = userProvider.lessonContents[node.id];
+      return content != null && content['challenges'] != null;
+    }).toList();
 
     return Scaffold(
       backgroundColor: const Color(0xFFF0F4F8),
@@ -47,45 +51,91 @@ class _ChallengesScreenState extends State<ChallengesScreen> {
               itemCount: activeHabits.length,
               itemBuilder: (context, index) {
                 final node = activeHabits[index];
+                final lessonContent = userProvider.lessonContents[node.id];
                 
-                // Pobieramy postępy dla wszystkich 3 medali z danej lekcji
+                // Check which stages exist in JSON
+                bool hasSilver = lessonContent?['challenges']?['silver'] != null;
+                bool hasGold = lessonContent?['challenges']?['gold'] != null;
+
+                int reqBronze = lessonContent?['challenges']?['bronze']?['days'] ?? 6;
+                int reqSilver = lessonContent?['challenges']?['silver']?['days'] ?? 14;
+                int reqGold = lessonContent?['challenges']?['gold']?['days'] ?? 30;
+
+                // Get progress for all 3 medals
                 int bronze = profile.challengesProgress['${node.id}_braz'] ?? 0;
                 int silver = profile.challengesProgress['${node.id}_srebro'] ?? 0;
                 int gold = profile.challengesProgress['${node.id}_zloto'] ?? 0;
 
-                // 🔥 LOGIKA AWANSU MEDALU 🔥
+                // MEDAL UPGRADE LOGIC WITH DYNAMIC CAPPING
                 String currentStage = 'braz';
                 int currentProgress = bronze;
-                int currentTotal = 6;
+                int currentTotal = reqBronze;
                 Color cardColor = Colors.orange[700]!;
                 String stageName = 'Brązowy';
+                String jsonStageKey = 'bronze'; 
+                bool hasNextStage = hasSilver;
 
-                if (bronze >= 6) {
-                  if (silver >= 14) {
-                    currentStage = 'zloto';
-                    currentProgress = gold;
-                    currentTotal = 30;
-                    cardColor = Colors.amber[600]!;
-                    stageName = 'Złoty';
+                if (bronze >= reqBronze) {
+                  if (hasSilver) {
+                    if (silver >= reqSilver) {
+                      if (hasGold) {
+                        currentStage = 'zloto';
+                        currentProgress = gold;
+                        currentTotal = reqGold;
+                        cardColor = Colors.amber[600]!;
+                        stageName = 'Złoty';
+                        jsonStageKey = 'gold';
+                        hasNextStage = false; // Gold is always the end
+                      } else {
+                        // Maxed out at Silver
+                        currentStage = 'srebro';
+                        currentProgress = reqSilver;
+                        currentTotal = reqSilver;
+                        cardColor = Colors.blueGrey[400]!;
+                        stageName = 'Srebrny';
+                        jsonStageKey = 'silver';
+                        hasNextStage = false;
+                      }
+                    } else {
+                      // Currently doing Silver
+                      currentStage = 'srebro';
+                      currentProgress = silver;
+                      currentTotal = reqSilver;
+                      cardColor = Colors.blueGrey[400]!;
+                      stageName = 'Srebrny';
+                      jsonStageKey = 'silver';
+                      hasNextStage = hasGold;
+                    }
                   } else {
-                    currentStage = 'srebro';
-                    currentProgress = silver;
-                    currentTotal = 14;
-                    cardColor = Colors.blueGrey[400]!;
-                    stageName = 'Srebrny';
+                    // Maxed out at Bronze (no Silver exists)
+                    currentStage = 'braz';
+                    currentProgress = reqBronze;
+                    currentTotal = reqBronze;
+                    cardColor = Colors.orange[700]!;
+                    stageName = 'Brązowy';
+                    jsonStageKey = 'bronze';
+                    hasNextStage = false;
                   }
                 }
 
                 final challengeKey = '${node.id}_$currentStage';
+                
+                // FETCH DESCRIPTION FROM JSON
+                String challengeDescription = "Zdobądź ten medal!";
+                if (lessonContent != null && lessonContent['challenges'] != null) {
+                  challengeDescription = lessonContent['challenges'][jsonStageKey]?['text'] ?? challengeDescription;
+                }
 
                 return _buildHabitCard(
                   context: context,
                   challengeKey: challengeKey,
                   lessonTitle: node.title,
                   stageName: stageName,
+                  description: challengeDescription,
                   progress: currentProgress,
                   total: currentTotal,
                   color: cardColor,
+                  hasNextStage: hasNextStage,
                   onTap: () {
                     userProvider.updateChallenge(challengeKey, currentProgress + 1);
                     setState(() => _clickedTodayIds.add(challengeKey));
@@ -101,9 +151,11 @@ class _ChallengesScreenState extends State<ChallengesScreen> {
     required String challengeKey,
     required String lessonTitle,
     required String stageName,
+    required String description,
     required int progress,
     required int total,
     required Color color,
+    required bool hasNextStage,
     required VoidCallback onTap,
   }) {
     double percent = progress / total;
@@ -116,11 +168,8 @@ class _ChallengesScreenState extends State<ChallengesScreen> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
-        border: Border(left: BorderSide(color: color, width: 6)), // Kolorowy pasek z boku
-        boxShadow: [
-          // Złagodzony cień, żeby nie wywalało błędu withOpacity
-          BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 10, offset: const Offset(0, 4))
-        ],
+        border: Border(left: BorderSide(color: color, width: 6)),
+        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 10, offset: const Offset(0, 4))],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -136,7 +185,19 @@ class _ChallengesScreenState extends State<ChallengesScreen> {
           ),
           const SizedBox(height: 4),
           Text("Poziom: Medal $stageName", style: TextStyle(color: color, fontWeight: FontWeight.w600)),
+          const SizedBox(height: 12),
+          
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(color: Colors.grey[50], borderRadius: BorderRadius.circular(8)),
+            child: Text(
+              description,
+              style: TextStyle(color: Colors.grey[800], fontSize: 14, height: 1.4),
+            ),
+          ),
           const SizedBox(height: 16),
+
           LinearProgressIndicator(
             value: percent > 1.0 ? 1.0 : percent,
             backgroundColor: Colors.grey[200],
@@ -160,7 +221,7 @@ class _ChallengesScreenState extends State<ChallengesScreen> {
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
               ),
               child: Text(isCompleted 
-                ? (stageName == 'Złoty' ? "PEŁNE MISTRZOSTWO!" : "AWANS ODBLOKOWANY") 
+                ? (hasNextStage ? "AWANS ODBLOKOWANY" : "PEŁNE MISTRZOSTWO!") 
                 : (isButtonActive ? "ZALICZ DZISIAJ" : "ZROBIONE NA DZIŚ")),
             ),
           ),

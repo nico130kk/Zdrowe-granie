@@ -14,105 +14,46 @@ class QuizQuestion {
 class MapNode {
   final String id;
   final String title;
-  final List<Flashcard> flashcards;
-  final QuizQuestion finalQuiz;
-  
   final double x;
   final double y;
-  
-  // ID lekcji, z której wywodzi się ta. 
-  // Aby odblokować ten node, rodzic (np. 'start') musi mieć brązowy medal (6 dni).
   final String? requiredParentId;
+  
+  // 🔥 TE POLA WRACAJĄ, żeby naprawić błędy!
+  // UWAGA: Jeśli miałeś tu wcześniej konkretne klasy (np. List<Flashcard> lub Quiz),
+  // podmień słówko 'dynamic' na swoje stare nazwy.
+  final List<dynamic> flashcards;
+  final dynamic finalQuiz;
 
   const MapNode({
     required this.id,
     required this.title,
-    required this.flashcards,
-    required this.finalQuiz,
     required this.x,
     required this.y,
     this.requiredParentId,
+    // Domyślnie ustawiamy puste wartości, bo i tak docelowo wepniemy tu JSON-a!
+    this.flashcards = const [], 
+    this.finalQuiz,
   });
 }
 
-// BAZA DANYCH DRZEWA WIEDZY - DOKŁADNIE JAK NA TWOIM RYSUNKU
+// Nasza nowa mapa ułożona dokładnie według Twojego odręcznego szkicu!
 const List<MapNode> appNodes = [
-  // 1. ŚRODEK (Zawsze dostępny)
-  MapNode(
-    id: 'start',
-    title: 'START',
-    x: 0,
-    y: 0,
-    requiredParentId: null,
-    flashcards: [
-      Flashcard(front: 'Lorem ipsum 1?', back: 'Dolor sit amet.'),
-    ],
-    finalQuiz: QuizQuestion(question: 'Lorem?', options: ['Ipsum', 'Dolor'], correctAnswerIndex: 0),
-  ),
-
-  // 2. W GÓRĘ (Od startu)
-  MapNode(
-    id: 'up_1',
-    title: 'Lorem Up',
-    x: 0,
-    y: -140,
-    requiredParentId: 'start',
-    flashcards: [Flashcard(front: 'Lorem ipsum?', back: 'Dolor sit amet.')],
-    finalQuiz: QuizQuestion(question: 'Ipsum?', options: ['A', 'B'], correctAnswerIndex: 1),
-  ),
-
-  // 3. W DÓŁ (Od startu)
-  MapNode(
-    id: 'down_1',
-    title: 'Lorem Down',
-    x: 0,
-    y: 140,
-    requiredParentId: 'start',
-    flashcards: [Flashcard(front: 'Lorem ipsum?', back: 'Dolor sit amet.')],
-    finalQuiz: QuizQuestion(question: 'Ipsum?', options: ['A', 'B'], correctAnswerIndex: 1),
-  ),
-
-  // 4. W LEWO (Od startu)
-  MapNode(
-    id: 'left_1',
-    title: 'Lorem Left',
-    x: -140,
-    y: 0,
-    requiredParentId: 'start',
-    flashcards: [Flashcard(front: 'Lorem ipsum?', back: 'Dolor sit amet.')],
-    finalQuiz: QuizQuestion(question: 'Ipsum?', options: ['A', 'B'], correctAnswerIndex: 1),
-  ),
-
-  // 5. W PRAWO (Od startu)
-  MapNode(
-    id: 'right_1',
-    title: 'Lorem Right',
-    x: 140,
-    y: 0,
-    requiredParentId: 'start',
-    flashcards: [Flashcard(front: 'Lorem ipsum?', back: 'Dolor sit amet.')],
-    finalQuiz: QuizQuestion(question: 'Ipsum?', options: ['A', 'B'], correctAnswerIndex: 1),
-  ),
-
-  // 6. ROZGAŁĘZIENIE Z PRAWEGO: W GÓRĘ-PRAWO
-  MapNode(
-    id: 'right_top',
-    title: 'Lorem R-Top',
-    x: 260,
-    y: -80,
-    requiredParentId: 'right_1', // Odblokuje się, gdy 'right_1' zdobędzie brąz!
-    flashcards: [Flashcard(front: 'Lorem ipsum?', back: 'Dolor sit amet.')],
-    finalQuiz: QuizQuestion(question: 'Ipsum?', options: ['A', 'B'], correctAnswerIndex: 1),
-  ),
-
-  // 7. ROZGAŁĘZIENIE Z PRAWEGO: W DÓŁ-PRAWO
-  MapNode(
-    id: 'right_bottom',
-    title: 'Lorem R-Bot',
-    x: 260,
-    y: 80,
-    requiredParentId: 'right_1', // Odblokuje się, gdy 'right_1' zdobędzie brąz!
-    flashcards: [Flashcard(front: 'Lorem ipsum?', back: 'Dolor sit amet.')],
-    finalQuiz: QuizQuestion(question: 'Ipsum?', options: ['A', 'B'], correctAnswerIndex: 1),
-  ),
+  // GŁÓWNY WĘZEŁ (Odblokowany na start)
+  MapNode(id: 'dieta', title: 'Dieta', x: -50, y: 150, requiredParentId: null),
+  
+  // ODNOGI OD DIETY
+  MapNode(id: 'warzywa_owoce', title: 'Warzywa\ni Owoce', x: -220, y: 50, requiredParentId: 'dieta'),
+  MapNode(id: 'produkty_zbozowe', title: 'Zbożowe', x: -160, y: -80, requiredParentId: 'dieta'),
+  MapNode(id: 'tluszcze', title: 'Tłuszcze', x: 80, y: 250, requiredParentId: 'dieta'),
+  
+  // BIAŁKO (Hub centralny odblokowywany przez Dietę)
+  MapNode(id: 'bialko', title: 'Białko', x: 80, y: 0, requiredParentId: 'dieta'),
+  
+  // ODNOGI OD BIAŁKA
+  MapNode(id: 'mieso', title: 'Mięso', x: -60, y: -160, requiredParentId: 'bialko'),
+  MapNode(id: 'ryby', title: 'Ryby', x: 40, y: -220, requiredParentId: 'bialko'),
+  MapNode(id: 'jaja', title: 'Jaja', x: 150, y: -200, requiredParentId: 'bialko'),
+  MapNode(id: 'mleko_nabial', title: 'Nabiał', x: 240, y: -120, requiredParentId: 'bialko'),
+  MapNode(id: 'orzechy', title: 'Orzechy', x: 270, y: -10, requiredParentId: 'bialko'),
+  MapNode(id: 'straczkowe', title: 'Strączki', x: 220, y: 100, requiredParentId: 'bialko'),
 ];

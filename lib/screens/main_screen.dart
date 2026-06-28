@@ -5,6 +5,7 @@ import 'lessons_screen.dart';
 import 'challenge_screen.dart';
 import 'profile_screen.dart'; // 🔥 DODANY IMPORT!
 
+
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
 

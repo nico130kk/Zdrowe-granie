@@ -19,6 +19,7 @@ class LessonsScreen extends StatelessWidget {
       ),
       body: LayoutBuilder(
         builder: (context, constraints) {
+          // Center of the map
           final Offset mapCenter = Offset(constraints.maxWidth / 2, constraints.maxHeight / 2);
 
           return InteractiveViewer(
@@ -26,35 +27,49 @@ class LessonsScreen extends StatelessWidget {
             boundaryMargin: const EdgeInsets.all(800),
             minScale: 0.5,
             maxScale: 1.5,
-            // 🔥 ZMIANA: Usunięto błąd z initialScale
             child: SizedBox(
               width: constraints.maxWidth * 2,
               height: constraints.maxHeight * 2,
               child: Stack(
                 clipBehavior: Clip.none,
                 children: [
+                  // 1. CONNECTION LINES (Drawn under nodes)
                   Positioned.fill(
                     child: CustomPaint(
                       painter: GraphConnectionPainter(
                         nodes: appNodes,
-                        profile: context.watch<UserProvider>().profile,
+                        userProvider: context.watch<UserProvider>(),
                         center: mapCenter,
                       ),
                     ),
                   ),
 
-                  // 🔥 ZMIANA: Usunięto zbędne .toList() na końcu
+                  // 2. NODES (Circles)
                   ...appNodes.map((node) {
-                    final profile = context.watch<UserProvider>().profile;
+                    final userProvider = context.watch<UserProvider>();
+                    final profile = userProvider.profile;
                     final bool isCompleted = profile?.completedLessonsIDs.contains(node.id) ?? false;
                     
+                    // LOCK LOGIC
                     bool isLocked = true;
                     if (node.requiredParentId == null) {
-                      isLocked = false; 
+                      isLocked = false; // Start node
                     } else {
-                      int parentBronzeProgress = profile?.challengesProgress['${node.requiredParentId}_braz'] ?? 0;
-                      if (parentBronzeProgress >= 6) {
-                        isLocked = false;
+                      final parentContent = userProvider.lessonContents[node.requiredParentId];
+                      bool parentHasChallenges = parentContent?['challenges'] != null;
+
+                      if (parentHasChallenges) {
+                        // If parent has challenges, check for bronze medal
+                        int requiredBronzeToUnlock = parentContent?['challenges']?['bronze']?['days'] ?? 6;
+                        int parentBronzeProgress = profile?.challengesProgress['${node.requiredParentId}_braz'] ?? 0;
+                        if (parentBronzeProgress >= requiredBronzeToUnlock) {
+                          isLocked = false;
+                        }
+                      } else {
+                        // If parent has NO challenges, just check if it's completed
+                        if (profile?.completedLessonsIDs.contains(node.requiredParentId) == true) {
+                          isLocked = false;
+                        }
                       }
                     }
 
@@ -74,13 +89,14 @@ class LessonsScreen extends StatelessWidget {
   }
 
   Widget _buildGraphNode(BuildContext context, MapNode node, bool isLocked, bool isCompleted) {
+    // Visual style of nodes
     Color bgColor = isLocked ? Colors.grey[300]! : (isCompleted ? Colors.green[400]! : Colors.white);
     Color borderColor = isLocked ? Colors.grey[400]! : (isCompleted ? Colors.green[600]! : Colors.blueAccent);
     Color iconColor = isLocked ? Colors.grey[500]! : (isCompleted ? Colors.white : Colors.blueAccent);
 
     return GestureDetector(
       onTap: isLocked
-          ? () => ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Zdobądź Brązowy Medal w poprzednim temacie! 🔒")))
+          ? () => ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Zdobądź Brązowy Medal (lub ukończ) w poprzednim temacie! 🔒")))
           : () => Navigator.push(context, MaterialPageRoute(builder: (_) => FlashcardLessonScreen(lesson: node))),
       child: Column(
         children: [
@@ -92,7 +108,6 @@ class LessonsScreen extends StatelessWidget {
               shape: BoxShape.circle,
               border: Border.all(color: borderColor, width: 4),
               boxShadow: [
-                // 🔥 ZMIANA: Użycie withValues zamiast withOpacity żeby uniknąć niebieskich ostrzeżeń
                 BoxShadow(color: Colors.black.withValues(alpha: 0.1), offset: const Offset(0, 4), blurRadius: 8),
               ],
             ),
@@ -119,12 +134,13 @@ class LessonsScreen extends StatelessWidget {
   }
 }
 
+// DRAWING LINES
 class GraphConnectionPainter extends CustomPainter {
   final List<MapNode> nodes;
-  final dynamic profile;
+  final UserProvider userProvider;
   final Offset center;
 
-  GraphConnectionPainter({required this.nodes, required this.profile, required this.center});
+  GraphConnectionPainter({required this.nodes, required this.userProvider, required this.center});
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -133,6 +149,8 @@ class GraphConnectionPainter extends CustomPainter {
       ..strokeCap = StrokeCap.round
       ..style = PaintingStyle.stroke;
 
+    final profile = userProvider.profile;
+
     for (var node in nodes) {
       if (node.requiredParentId != null) {
         final parent = nodes.firstWhere((n) => n.id == node.requiredParentId);
@@ -140,10 +158,19 @@ class GraphConnectionPainter extends CustomPainter {
         final start = Offset(center.dx + parent.x, center.dy + parent.y);
         final end = Offset(center.dx + node.x, center.dy + node.y);
 
-        int parentBronzeProgress = profile?.challengesProgress['${node.requiredParentId}_braz'] ?? 0;
-        bool isUnlocked = parentBronzeProgress >= 6;
+        final parentContent = userProvider.lessonContents[node.requiredParentId];
+        bool parentHasChallenges = parentContent?['challenges'] != null;
+        bool isUnlocked = false;
+
+        if (parentHasChallenges) {
+          int requiredBronzeToUnlock = parentContent?['challenges']?['bronze']?['days'] ?? 6;
+          int parentBronzeProgress = profile?.challengesProgress['${node.requiredParentId}_braz'] ?? 0;
+          isUnlocked = parentBronzeProgress >= requiredBronzeToUnlock;
+        } else {
+          isUnlocked = profile?.completedLessonsIDs.contains(node.requiredParentId) == true;
+        }
         
-        // 🔥 ZMIANA: withValues zamiast withOpacity
+        // Line highlights if the child node is unlocked
         paint.color = isUnlocked ? Colors.blueAccent.withValues(alpha: 0.6) : Colors.grey[300]!;
 
         canvas.drawLine(start, end, paint);
