@@ -1,3 +1,6 @@
+/// Screen displaying the list of unlocked challenges.
+/// Parses medal requirements from JSON and prevents duplicate daily completion
+/// using the UserProvider verification system.
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../services/user_provider.dart';
@@ -11,9 +14,6 @@ class ChallengesScreen extends StatefulWidget {
 }
 
 class _ChallengesScreenState extends State<ChallengesScreen> {
-  // Local memory for clicked IDs in current session
-  final Set<String> _clickedTodayIds = {};
-
   @override
   Widget build(BuildContext context) {
     final userProvider = context.watch<UserProvider>();
@@ -23,7 +23,6 @@ class _ChallengesScreenState extends State<ChallengesScreen> {
       return const Scaffold(body: Center(child: CircularProgressIndicator(color: Colors.green)));
     }
 
-    // Filter to show only completed lessons THAT HAVE challenges
     final activeHabits = appNodes.where((node) {
       if (!profile.completedLessonsIDs.contains(node.id)) return false;
       final content = userProvider.lessonContents[node.id];
@@ -53,7 +52,6 @@ class _ChallengesScreenState extends State<ChallengesScreen> {
                 final node = activeHabits[index];
                 final lessonContent = userProvider.lessonContents[node.id];
                 
-                // Check which stages exist in JSON
                 bool hasSilver = lessonContent?['challenges']?['silver'] != null;
                 bool hasGold = lessonContent?['challenges']?['gold'] != null;
 
@@ -61,12 +59,10 @@ class _ChallengesScreenState extends State<ChallengesScreen> {
                 int reqSilver = lessonContent?['challenges']?['silver']?['days'] ?? 14;
                 int reqGold = lessonContent?['challenges']?['gold']?['days'] ?? 30;
 
-                // Get progress for all 3 medals
                 int bronze = profile.challengesProgress['${node.id}_braz'] ?? 0;
                 int silver = profile.challengesProgress['${node.id}_srebro'] ?? 0;
                 int gold = profile.challengesProgress['${node.id}_zloto'] ?? 0;
 
-                // MEDAL UPGRADE LOGIC WITH DYNAMIC CAPPING
                 String currentStage = 'braz';
                 int currentProgress = bronze;
                 int currentTotal = reqBronze;
@@ -85,9 +81,8 @@ class _ChallengesScreenState extends State<ChallengesScreen> {
                         cardColor = Colors.amber[600]!;
                         stageName = 'Złoty';
                         jsonStageKey = 'gold';
-                        hasNextStage = false; // Gold is always the end
+                        hasNextStage = false;
                       } else {
-                        // Maxed out at Silver
                         currentStage = 'srebro';
                         currentProgress = reqSilver;
                         currentTotal = reqSilver;
@@ -97,7 +92,6 @@ class _ChallengesScreenState extends State<ChallengesScreen> {
                         hasNextStage = false;
                       }
                     } else {
-                      // Currently doing Silver
                       currentStage = 'srebro';
                       currentProgress = silver;
                       currentTotal = reqSilver;
@@ -107,7 +101,6 @@ class _ChallengesScreenState extends State<ChallengesScreen> {
                       hasNextStage = hasGold;
                     }
                   } else {
-                    // Maxed out at Bronze (no Silver exists)
                     currentStage = 'braz';
                     currentProgress = reqBronze;
                     currentTotal = reqBronze;
@@ -120,7 +113,6 @@ class _ChallengesScreenState extends State<ChallengesScreen> {
 
                 final challengeKey = '${node.id}_$currentStage';
                 
-                // FETCH DESCRIPTION FROM JSON
                 String challengeDescription = "Zdobądź ten medal!";
                 if (lessonContent != null && lessonContent['challenges'] != null) {
                   challengeDescription = lessonContent['challenges'][jsonStageKey]?['text'] ?? challengeDescription;
@@ -128,6 +120,7 @@ class _ChallengesScreenState extends State<ChallengesScreen> {
 
                 return _buildHabitCard(
                   context: context,
+                  nodeId: node.id,
                   challengeKey: challengeKey,
                   lessonTitle: node.title,
                   stageName: stageName,
@@ -136,10 +129,7 @@ class _ChallengesScreenState extends State<ChallengesScreen> {
                   total: currentTotal,
                   color: cardColor,
                   hasNextStage: hasNextStage,
-                  onTap: () {
-                    userProvider.updateChallenge(challengeKey, currentProgress + 1);
-                    setState(() => _clickedTodayIds.add(challengeKey));
-                  },
+                  userProvider: userProvider,
                 );
               },
             ),
@@ -148,6 +138,7 @@ class _ChallengesScreenState extends State<ChallengesScreen> {
 
   Widget _buildHabitCard({
     required BuildContext context,
+    required String nodeId,
     required String challengeKey,
     required String lessonTitle,
     required String stageName,
@@ -156,11 +147,11 @@ class _ChallengesScreenState extends State<ChallengesScreen> {
     required int total,
     required Color color,
     required bool hasNextStage,
-    required VoidCallback onTap,
+    required UserProvider userProvider,
   }) {
     double percent = progress / total;
     bool isCompleted = progress >= total;
-    bool isButtonActive = !_clickedTodayIds.contains(challengeKey) && !isCompleted;
+    bool isButtonActive = userProvider.isChallengeAvailableToday(nodeId) && !isCompleted;
 
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
@@ -213,7 +204,7 @@ class _ChallengesScreenState extends State<ChallengesScreen> {
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(
-              onPressed: isButtonActive ? onTap : null,
+              onPressed: isButtonActive ? () => userProvider.updateChallenge(nodeId, challengeKey, progress + 1) : null,
               style: ElevatedButton.styleFrom(
                 backgroundColor: color,
                 foregroundColor: Colors.white,

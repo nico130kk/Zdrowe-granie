@@ -1,13 +1,18 @@
 {
   "topics": [
     {
+  "id": "start",
+  "name": "Talerz zdrowego żywienia",
+  "flashcards": ["Witaj w aplikacji! Poznaj tajniki Talerza Zdrowego Żywienia."]
+    },
+    {
       "id": "dieta",
       "name": "Dieta i Talerz",
       "flashcards": [
         "1. Zmiana diety jest trudna. Wiąże się z kolejnymi wyzwaniami, które zmieniają Nasze podejście do całego życia.\n\nDobrym początkiem jest Talerz Zdrowego Odżywiania, który mówi nam dokładnie jak zmienić swoje nawyki żywieniowe i zdrowotne.",
-        "2. Talerz mówi nam o tym, że nasze posiłki powinny składać się z trzech głównych kategorii:\n\na. Owoce i warzywa\nb. Produkty zbożowe\nc. Orzechy / Nabiał / Produkty zwierzęce",
+        "2. Talerz mówi nam o tym, że nasze posiłki powinny składać się z trzech głównych kategorii:\n\na. Owoce i warzywa\nb. Produkte zbożowe\nc. Orzechy / Nabiał / Produkte zwierzęce",
         "3. Owoce i warzywa mówią same za siebie, są to np. marchewki, jabłka czy też nawet kapusta.\n\nWarzywa i owoce spożywaj jak najczęściej i w jak największej ilości, co najmniej połowę tego co jesz.\n\nPamiętaj o właściwych proporcjach: 3/4 - warzywa i 1/4 - owoce.",
-        "4. Produkty zbożowe to np. chleby, płatki owsiane czy też kasza. Powinny być 1/4 tego co jesz.\n\nZawsze staraj się spożywać produkty pełnoziarniste w tej kategorii.",
+        "4. Produkte zbożowe to np. chleby, płatki owsiane czy też kasza. Powinny być 1/4 tego co jesz.\n\nZawsze staraj się spożywać produkty pełnoziarniste w tej kategorii.",
         "5. Ostatnia kategoria to mieszanina wysoko tłuszczowych i wysokokalorycznych składników takich jak ryby, mięso, nabiał (czyli produkty mleczne) oraz orzechy.\n\nTa część powinna stanowić 1/4 tego co jesz. Zawsze staraj się kupować produkty jak najmniej przetworzone w tej kategorii!",
         "6. Talerz wspomina również o rzeczach, które możemy zapomnieć, a które są nie mniej ważne!\n\na. Pij dużo wody (minimalnie 1,5 litra dziennie)\nb. Bądź aktywny fizycznie każdego dnia\nc. Jedz regularnie (od 4 do 5 posiłków dziennie) i nie jedz bezpośrednio przed snem"
       ],
@@ -24,7 +29,7 @@
         "3. Co dostarczają warzywa i owoce?\n\na. Witaminy: witamina C, beta-karoten, witaminy z grupy B, witamina K, kwas foliowy.\nb. Składniki mineralne: potas, magnez, wapń, żelazo.\nc. Błonnik pokarmowy: wspiera pracę jelit, zwiększa uczucie sytości.\nd. Antyoksydanty: chronią komórki przed stresem oksydacyjnym.",
         "4. Warzywa a owoce - które są ważniejsze?\n\nWarzywa zawierają mniej cukru oraz kalorii. Zawierają natomiast dużo błonnika. Owoce z kolei mają większe ilości naturalnych cukrów oraz duże zapasy energetyczne.\n\nZ tych powodów warzywa powinny być generalnie częściej spożywane od owoców.",
         "5. Ile warzyw i owoców dziennie?\n\nZaleca się spożywanie minimum 400 g warzyw i owoców dziennie, najlepiej przy każdym posiłku.",
-        "6. Uwaga: Czy sok może zastąpić porcję owocu?\n\nOdpowiedź: Częściowo tak. Szklanka 100% soku dostarcza witamin, jednak zwykle zawiera znacznie mniej błonnika. Oznacza to, że nie jest jego pełnowartościowym zamiennikiem i nie daje takiego samego uczucia sytości."
+        "6. Uwaga: Czy sok może zastąpić porciju owocu?\n\nOdpowiedź: Częściowo tak. Szklanka 100% soku dostarcza witamin, jednak zwykle zawiera znacznie mniej błonnika. Oznacza to, że nie jest jego pełnowartościowym zamiennikiem i nie daje takiego samego uczucia sytości."
       ],
       "challenges": {
         "bronze": { "text": "Zjedz warzywo lub owoc w każdym posiłku.", "days": 4 },
@@ -50,10 +55,39 @@
       ]
     },
     {
+      "id": "witaminy",
+      "name": "Witaminy",
+      "flashcards": [
+        "1. Witaminy to związki organiczne, które są niezbędne do prawidłowego funkcjonowania organizmu. Nie dostarczają energii, ale biorą udział w wielu procesach metabolicznych. Organizm człowieka w większości nie potrafi ich sam wytwarzać, dlatego muszą być dostarczane z dietą.",
+        "2. Witaminy odpowiadają m.in. za odporność, prawidłową pracę układu nerwowego oraz metabolizm. Wspierają także wzrost, regenerację tkanek i prawidłowe funkcjonowanie narządów. Każda witamina pełni inną, specyficzną rolę.",
+        "3. Witaminy dzielimy na rozpuszczalne w wodzie (np. witamina C oraz witaminy z grupy B) i w tłuszczach (A, D, E, K). Witaminy rozpuszczalne w wodzie muszą być regularnie dostarczane, ponieważ organizm ich nie magazynuje.",
+        "4. Głównym źródłem witamin jest zróżnicowana dieta, zwłaszcza warzywa, owoce, produkty zbożowe, nabiał oraz mięso i ryby. Według NCEZ kluczowe jest codzienne spożywanie warzyw i owoców jako podstawowego źródła witamin.",
+        "5. Najlepiej wybierać produkty jak najmniej przetworzone, ponieważ zawierają więcej naturalnych witamin. Suplementy diety powinny być stosowane tylko w uzasadnionych przypadkach. Podstawą zawsze powinna być zbilansowana dieta."
+      ],
+      "challenges": {
+        "bronze": { "text": "Codziennie zjedz przynajmniej jedną porcję świeżych warzyw lub owoców.", "days": 7 },
+        "silver": { "text": "Wprowadź do diety minimum 5 różnych kolorów warzyw i owoców tygodniowo.", "days": 14 },
+        "gold": { "text": "Przez cały tydzień nie stosuj suplementów „na wszelki wypadek”, a skup się na różnorodnej diecie.", "days": 30 }
+      },
+      "quiz": [
+        {
+          "question": "Czy witaminy dostarczają bezpośrednio energii dla organizmu?",
+          "options": ["Tak", "Nie"],
+          "correctAnswerIndex": 1
+        },
+        {
+          "question": "Jakie są dwa główne podziały witamin ze względu na ich właściwości?",
+          "options": ["Rozpuszczalne w wodzie i rozpuszczalne w tłuszczach", "Naturalne i syntetyczne", "Roślinne i zwierzęce"],
+          "correctAnswerIndex": 0
+        }
+      ]
+    },
+    {
       "id": "produkty_zbozowe",
       "name": "Produkty zbożowe",
       "flashcards": [
-        "1. Produkty zbożowe stanowią podstawę żywienia w wielu kulturach i są jednym z głównych źródeł energii w diecie człowieka.\n\n2. Produkty zbożowe powstają z nasion roślin takich jak:\na. pszenica\nb. żyto\nc. jęczmień\nd. owies\ne. kukurydza\nf. ryż\ng. orkisz",
+        "1. Produkty zbożowe stanowią podstawę żywienia w wielu kulturach i są jednym z głównych źródeł energii w diecie człowieka.",
+        "2. Produkty zbożowe powstają z nasion roślin takich jak:\na. pszenica\nb. żyto\nc. jęczmień\nd. owies\ne. kukurydza\nf. ryż\ng. orkisz",
         "3. Produkty z pełnego ziarna są źródłem błonnika pokarmowego, węglowodanów złożonych, witamin z grupy B, a także składników mineralnych.\n\nWiększość składników mineralnych znajduje się tuż pod okrywą owocowo-nasienną, która jest usuwana w procesie oczyszczania.",
         "4. Najważniejsze jest odróżnienie produktów zbożowych przetworzonych od pełnoziarnistych.\n\nProdukty pełnoziarniste powstają z całego ziarna (łuska + zarodek + bielmo) i są znacznie zdrowsze od produktów rafinowanych, które powstają z samego bielma.",
         "5. Przykłady produktów pełnoziarnistych (co kupować):\na. chleb razowy\nb. makaron pełnoziarnisty\nc. brązowy ryż\nd. kasza gryczana, jęczmienna\ne. płatki owsiane",
@@ -83,10 +117,39 @@
       ]
     },
     {
+      "id": "blonnik",
+      "name": "Błonnik pokarmowy",
+      "flashcards": [
+        "1. Błonnik pokarmowy to składniki roślinne, których organizm człowieka nie trawi ani nie wchłania. Mimo to pełni bardzo ważną rolę w prawidłowym funkcjonowaniu układu pokarmowego. Według zaleceń NCEZ jego obecność w diecie jest kluczowa dla zdrowia.",
+        "2. Błonnik wspomaga pracę jelit i reguluje rytm wypróżnień. Pomaga także utrzymać prawidłowy poziom glukozy i cholesterolu we krwi. Dodatkowo zwiększa uczucie sytości po posiłku.",
+        "3. Wyróżnia się błonnik rozpuszczalny i nierozpuszczalny w wodzie. Błonnik rozpuszczalny spowalnia wchłanianie cukrów, a nierozpuszczalny przyspiesza pasaż jelitowy. Oba rodzaje są potrzebne dla prawidłowej pracy organizmu.",
+        "4. Głównym źródłem błonnika są produkty roślinne, takie jak warzywa, owoce, pełnoziarniste produkty zbożowe oraz nasiona roślin strączkowych. Im mniej przetworzony produkt, tym więcej zawiera błonnika.",
+        "5. Zbyt mała ilość błonnika w diecie może prowadzić do zaparć i problemów trawiennych. Nadmierne spożycie bez odpowiedniej ilości płynów może powodować dyskomfort jelitowy. Dlatego ważne jest odpowiednie nawodnienie."
+      ],
+      "challenges": {
+        "bronze": { "text": "Jedz codziennie jedną porcję produktu bogatego w błonnik.", "days": 6 },
+        "silver": { "text": "Dodawaj warzywa do minimum dwóch posiłków dziennie.", "days": 14 },
+        "gold": { "text": "Codziennie spożywaj produkty bogate w błonnik w każdym głównym posiłku.", "days": 30 }
+      },
+      "quiz": [
+        {
+          "question": "Jaką główną funkcję pełni błonnik pokarmowy w układzie pokarmowym?",
+          "options": ["Dostarcza szybkiej energii", "Wspomaga pracę jelit i reguluje wypróżnienia", "Wypłukuje minerały z organizmu"],
+          "correctAnswerIndex": 1
+        },
+        {
+          "question": "Co może się wydarzyć przy dużej ilości błonnika i zbyt małej ilości płynów?",
+          "options": ["Nagłe osłabienie mięśni", "Dyskomfort jelitowy i zaparcia", "Gwałtowny skok glukozy"],
+          "correctAnswerIndex": 1
+        }
+      ]
+    },
+    {
       "id": "mleko_nabial",
       "name": "Mleko i przetwory",
       "flashcards": [
-        "1. Mleko i przetwory mleczne to ważna grupa produktów. Dostarczają białka, wapnia oraz wielu witamin.\n\n2. Przetwory to wyroby mające początek w mleku. Mogą być nimi jogurty, kefiry, sery (dojrzewające i twarogowe) oraz lody śmietankowe!",
+        "1. Mleko i przetwory mleczne to ważna grupa produktów. Dostarczają białka, wapnia oraz wielu witamin.",
+        "2. Przetwory to wyroby mające początek w mleku. Mogą być nimi jogurty, kefiry, sery (dojrzewające i twarogowe) oraz lody śmietankowe!",
         "3. Do „najcenniejszych\" składników zaliczamy: łatwo przyswajalne białko, wapń oraz witaminy z grupy B, witaminy rozpuszczalne w tłuszczach i bakterie kwasu mlekowego (np. w kefirze).",
         "4. Przyjmuje się, że dziennie powinno się spożywać 2-3 porcje nabiału, które pokrywają do 80% zapotrzebowania na wapń.\n\nJedna porcja to np. 1 szklanka mleka/kefiru, plaster żółtego sera lub kawałek twarogu.",
         "5. Gdy kupujemy jogurty, kefiry czy maślanki naturalne, powinniśmy wybierać produkty bez dodatkowych składników smakowych (unikamy cukru i barwników).\n\n6. Alternatywy dla nabiału to np. napoje sojowe, migdałowe czy owsiane wzbogacone w wapń."
@@ -98,7 +161,7 @@
       },
       "quiz": [
         {
-          "question": "Ile porcji nabiału dziennie zaleca się spożywać, aby pokryć większość zapotrzebowania na wapń?",
+          "question": "Ref: Ile porcji nabiału dziennie zaleca się spożywać, aby pokryć większość zapotrzebowania na wapń?",
           "options": ["1 porcję", "2-3 porcje", "Minimum 5 porcji", "Nabiału należy całkowicie unikać"],
           "correctAnswerIndex": 1
         },
@@ -118,7 +181,26 @@
       "id": "bialko",
       "name": "Źródła Białka",
       "flashcards": [
-        "Do źródeł białka zaliczamy nasiona roślin strączkowych, mięso, ryby, mleko i produkty mleczne oraz ich roślinne zamienniki wzbogacane w wapń, jaja, a także orzechy, pestki i nasiona.\n\nStaraj się jadać te produkty naprzemiennie, dzięki czemu zadbasz o różnorodność na talerzu."
+        "1. Białko to jeden z podstawowych składników odżywczych, niezbędny do prawidłowego funkcjonowania organizmu. Buduje i regeneruje tkanki oraz bierze udział w procesach metabolicznych.",
+        "2. Główne źródła białka to mięso, ryby, jaja oraz nabiał. Występuje ono również w produktach roślinnych, takich jak rośliny strączkowe, orzechy i nasiona. Różnorodność źródeł pozwala na pokrycie zapotrzebowania.",
+        "3. Białko dzieli się na pełnowartościowe (zawiera wszystkie niezbędne aminokwasy, pochodzi głównie z produktów zwierzęcych) i niepełnowartościowe (białka roślinne, które mogą wymagać łączenia produktów)."
+      ],
+      "challenges": {
+        "bronze": { "text": "W każdym głównym posiłku uwzględnij źródło białka.", "days": 5 },
+        "silver": { "text": "Korzystaj z minimum trzech różnych źródeł białka w tygodniu.", "days": 12 },
+        "gold": { "text": "Wprowadź co najmniej dwa posiłki tygodniowo oparte w 100% na białku roślinnym.", "days": 25 }
+      },
+      "quiz": [
+        {
+          "question": "Za co głównie odpowiada białko w organizmie człowieka?",
+          "options": ["Dostarczanie wyłącznie energii do mózgu", "Budowę i regenerację tkanek, mięśni oraz enzymów", "Gromadzenie zapasów tkanki tłuszczowej"],
+          "correctAnswerIndex": 1
+        },
+        {
+          "question": "Jakie produkty stanowią źródło pełnowartościowego białka?",
+          "options": ["Produkty pochodzenia zwierzęcego", "Wyłącznie oczyszczone produkty zbożowe", "Słodycze i napoje słodzone"],
+          "correctAnswerIndex": 0
+        }
       ]
     },
     {
@@ -270,6 +352,62 @@
       ]
     },
     {
+      "id": "weglowodany",
+      "name": "Węglowodany",
+      "flashcards": [
+        "1. Węglowodany to podstawowe źródło energii dla organizmu człowieka. Są niezbędne do prawidłowego funkcjonowania mózgu, mięśni i innych narządów. Według NCEZ powinny stanowić ważny element codziennej diety.",
+        "2. Węglowodany dostarczają energii potrzebnej do pracy i aktywności fizycznej. Ułatwiają prawidłowe funkcjonowanie układu nerwowego. Są również ważne w procesach metabolicznych.",
+        "3. Węglowodany dzielimy na proste i złożone. Cukry proste dostarczają szybkiej energii, ale ich nadmiar jest niekorzystny. Węglowodany złożone są trawione wolniej i dają dłuższe uczucie sytości.",
+        "4. Główne źródła to produkty zbożowe, takie jak pieczywo, kasze i makarony, a także warzywa i owoce. Szczególnie zalecane są produkty pełnoziarniste. Zgodnie z NCEZ powinny one stanowić podstawę diety.",
+        "5. Niedobór węglowodanów może prowadzić do osłabienia i braku energii. Nadmiar, szczególnie cukrów prostych, sprzyja otyłości i chorobom metabolicznym. Dlatego ważna jest ich odpowiednia ilość i jakość w diecie."
+      ],
+      "challenges": {
+        "bronze": { "text": "Wybierz pełnoziarnisty produkt zamiast rafinowanego.", "days": 5 },
+        "silver": { "text": "Ogranicz słodkie przekąski do maksymalnie 2 razy w tygodniu.", "days": 12 },
+        "gold": { "text": "Większość spożywanych węglowodanów czerp z produktów pełnoziarnistych.", "days": 25 }
+      },
+      "quiz": [
+        {
+          "question": "Jakie są dwa główne rodzaje węglowodanów?",
+          "options": ["Proste i złożone", "Naturalne i sztuczne"],
+          "correctAnswerIndex": 0
+        },
+        {
+          "question": "Które węglowodany zapewniają zdecydowanie dłuższe uczucie sytości po posiłku?",
+          "options": ["Węglowodany proste", "Węglowodany złożone"],
+          "correctAnswerIndex": 1
+        }
+      ]
+    },
+    {
+      "id": "mineraly",
+      "name": "Składniki mineralne",
+      "flashcards": [
+        "1. Składniki mineralne to nieorganiczne związki niezbędne do prawidłowego funkcjonowania organizmu. Nie dostarczają energii, ale biorą udział w wielu procesach życiowych. Według NCEZ muszą być regularnie dostarczane z dietą.",
+        "2. Składniki mineralne odpowiadają m.in. za budowę kości i zębów oraz prawidłową pracę mięśni i układu nerwowego. Uczestniczą w regulacji gospodarki wodno-elektrolitowej.",
+        "3. Składniki mineralne dzielimy na makroelementy i mikroelementy. Makroelementy, takie jak wapń, magnez czy potas, występują w większych ilościach w organizmie. Mikroelementy, np. żelazo, cynk czy jod, są potrzebne w małych ilościach.",
+        "4. Głównym źródłem są różnorodne produkty spożywcze, takie jak warzywa, owoce, produkty zbożowe, nabiał, mięso i ryby. Woda również może dostarczać niektórych minerałów.",
+        "5. Niedobór składników mineralnych może prowadzić do wielu zaburzeń, np. anemii czy osłabienia kości. Nadmiar również może być szkodliwy i zaburzać pracę organizmu. Dlatego ważne jest utrzymanie odpowiednich proporcji."
+      ],
+      "challenges": {
+        "bronze": { "text": "Codziennie zjedz jeden produkt bogaty w składniki mineralne.", "days": 6 },
+        "silver": { "text": "Jedz codziennie warzywa i produkty pełnoziarniste.", "days": 14 },
+        "gold": { "text": "Dbaj o różnorodność diety przez cały tydzień.", "days": 30 }
+      },
+      "quiz": [
+        {
+          "question": "Jak dzielimy niezbędne składniki mineralne?",
+          "options": ["Na makroelementy i mikroelementy", "Na organiczne i syntetyczne"],
+          "correctAnswerIndex": 0
+        },
+        {
+          "question": "Czy składniki mineralne dostarczają nam energii (kalorii)?",
+          "options": ["Tak", "Nie"],
+          "correctAnswerIndex": 1
+        }
+      ]
+    },
+    {
       "id": "tluszcze",
       "name": "Tłuszcze",
       "flashcards": [
@@ -297,6 +435,265 @@
         {
           "question": "Dlaczego zaleca się unikanie tłuszczów pochodzenia zwierzęcego, takich jak masło czy smalec?",
           "options": ["Ponieważ zawierają szkodliwe sztuczne barwniki i karmel", "Dostarczają dużo nasyconych kwasów tłuszczowych oraz cholesterolu, co zwiększa ryzyko chorób układu krążenia i nowotworów", "Ponieważ całkowicie wypłukują witaminy z grupy B i witaminę C"],
+          "correctAnswerIndex": 1
+        }
+      ]
+    },
+    {
+      "id": "posilki_4_5",
+      "name": "4-5 posiłków dziennie",
+      "flashcards": [
+        "1. Spożywanie 4–5 posiłków dziennie pomaga utrzymać stały poziom energii w ciągu dnia. Regularne jedzenie zapobiega nagłym spadkom glukozy we krwi. Według NCEZ regularność posiłków wspiera prawidłową pracę organizmu.",
+        "2. Taki model żywienia ułatwia utrzymanie prawidłowej masy ciała. Zmniejsza ryzyko podjadania i napadów głodu. Wspiera także prawidłową pracę układu pokarmowego.",
+        "3. Zwykle zaleca się: śniadanie, II śniadanie, obiad, podwieczorek i kolację. Posiłki powinny być spożywane co 3–4 godziny. Ważne jest, aby były one zbilansowane i różnorodne."
+      ],
+      "challenges": {
+        "bronze": { "text": "Jedz minimum 3 regularne posiłki dziennie.", "days": 5 },
+        "silver": { "text": "Jedz 4 posiłki dziennie przez 5 dni tygodnia.", "days": 12 },
+        "gold": { "text": "Jedz 4–5 posiłków dziennie przez cały tydzień.", "days": 25 }
+      },
+      "quiz": [
+        {
+          "question": "Co ile godzin zaleca się spożywać posiłki w optymalnym modelu żywienia?",
+          "options": ["Co 1-2 godziny", "Co 3–4 godziny", "Co 6-7 godzin"],
+          "correctAnswerIndex": 1
+        },
+        {
+          "question": "Ile posiłków dziennie zaleca się spożywać dla zachowania stabilnej energii i unikania podjadania?",
+          "options": ["1-2 posiłki", "4–5 posiłków", "Zawsze powyżej 7 posiłków"],
+          "correctAnswerIndex": 1
+        }
+      ]
+    },
+    {
+      "id": "regularne_pory",
+      "name": "Regularne pory posiłków",
+      "flashcards": [
+        "1. Regularne spożywanie posiłków pomaga utrzymać stabilny poziom energii w ciągu dnia. Organizm lepiej wykorzystuje dostarczane składniki odżywcze. Według NCEZ regularność jest jednym z elementów zdrowego żywienia.",
+        "2. Stałe pory jedzenia wspierają prawidłową pracę układu trawiennego. Zmniejszają ryzyko napadów głodu i podjadania między posiłkami. Pomagają także w utrzymaniu prawidłowej masy ciała.",
+        "3. Posiłki najlepiej spożywać co 3–4 godziny w ciągu dnia. Ważne jest, aby unikać długich przerw między jedzeniem. Regularność sprzyja lepszemu samopoczuciu i koncentracji."
+      ],
+      "challenges": {
+        "bronze": { "text": "Ustal stałą porę śniadania.", "days": 5 },
+        "silver": { "text": "Zachowaj podobne godziny 3 głównych posiłków.", "days": 12 },
+        "gold": { "text": "Przez cały tydzień jedz posiłki o stałych porach.", "days": 25 }
+      },
+      "quiz": [
+        {
+          "question": "Co pomaga skutecznie ograniczyć jedzenie posiłków o stałych, regularnych porach?",
+          "options": ["Niekontrolowane podjadanie między posiłkami", "Aktywność fizyczną przed snem"],
+          "correctAnswerIndex": 0
+        },
+        {
+          "question": "Jakie przerwy między posiłkami są powszechnie zalecane w zdrowym żywieniu?",
+          "options": ["Maksymalnie 1 godzina", "Około 3–4 godziny", "Powyżej 6 godzin"],
+          "correctAnswerIndex": 1
+        }
+      ]
+    },
+    {
+      "id": "dokladne_przezuwanie",
+      "name": "Dokładne przeżuwanie",
+      "flashcards": [
+        "1. Dokładne przeżuwanie pokarmu jest pierwszym etapem trawienia mechanicznego. Ułatwia rozdrobnienie jedzenia i jego późniejsze trawienie w przewodzie pokarmowym. Prawidłowe gryzienie wpływa na lepsze wykorzystanie składników.",
+        "2. Dobre przeżuwanie zmniejsza obciążenie żołądka i poprawia trawienie. Pomaga również szybciej odczuć sytość, co może zapobiegać przejadaniu się. Wspiera także prawidłową pracę układu pokarmowego."
+      ],
+      "challenges": {
+        "bronze": { "text": "Jeden posiłek dziennie jedz bez telefonu i pośpiechu.", "days": 5 },
+        "silver": { "text": "Każdy kęs przeżuwaj dokładnie przed połknięciem.", "days": 12 },
+        "gold": { "text": "Wszystkie główne posiłki jedz świadomie i powoli przez cały tydzień.", "days": 25 }
+      },
+      "quiz": [
+        {
+          "question": "Jaką rolę pełni dokładne przeżuwanie pokarmu?",
+          "options": ["Jest pierwszym etapem mechanicznego trawienia", "Spowalnia wchłanianie witamin w jelitach"],
+          "correctAnswerIndex": 0
+        },
+        {
+          "question": "Jak dokładne, powolne gryzienie wpływa na uczucie sytości?",
+          "options": ["Opóźnia wysyłanie sygnału do mózgu", "Pomaga szybciej odczuć sytość i zapobiega przejedzeniu"],
+          "correctAnswerIndex": 1
+        }
+      ]
+    },
+    {
+      "id": "woda_napoje",
+      "name": "Picie wody/napoje",
+      "flashcards": [
+        "1. Woda jest niezbędna do prawidłowego funkcjonowania organizmu człowieka. Uczestniczy w transporcie składników odżywczych i regulacji temperatury ciała. Według NCEZ odpowiednie nawodnienie jest podstawą zdrowego żywienia.",
+        "2. W ciągu dnia należy regularnie uzupełniać płyny, nie czekając na uczucie pragnienia. Najlepszym wyborem jest czysta woda pitna. Napoje powinny być spożywane w małych ilościach, ale systematycznie.",
+        "3. Najbardziej zalecana jest woda oraz herbaty niesłodzone. Należy maksymalnie ograniczać napoje słodzone i energetyczne. Nadmiar cukru w napojach sprzyja poważnym problemom zdrowotnym."
+      ],
+      "challenges": {
+        "bronze": { "text": "Wypij dodatkową szklankę wody każdego dnia.", "days": 5 },
+        "silver": { "text": "Noś przy sobie butelkę wody i wypij minimum 1,5 l dziennie.", "days": 14 },
+        "gold": { "text": "Zastąp wszystkie słodzone napoje wodą przez tydzień.", "days": 30 }
+      },
+      "quiz": [
+        {
+          "question": "Jaki płyn jest najlepszym i najbardziej rekomendowanym wyborem w codziennej diecie?",
+          "options": ["Słodzona herbata owocowa", "Czysta woda", "Napoje izotoniczne i energetyki"],
+          "correctAnswerIndex": 1
+        },
+        {
+          "question": "Czy w celu prawidłowego nawodnienia organizmu należy czekać, aż pojawi się silne uczucie pragnienia?",
+          "options": ["Tak, pragnienie to świetny wyznacznik", "Nie, należy uzupełniać płyny regularnie zanim pragnienie wystąpi"],
+          "correctAnswerIndex": 1
+        }
+      ]
+    },
+    {
+      "id": "unikanie_alkoholu",
+      "name": "Unikanie alkoholu",
+      "flashcards": [
+        "1. Alkohol ma negatywny wpływ na wiele narządów, w tym wątrobę, mózg i układ pokarmowy. Zaburza procesy metaboliczne i osłabia funkcjonowanie organizmu. Według NCEZ jego spożycie nie jest elementem zdrowej diety.",
+        "2. Regularne spożywanie alkoholu może prowadzić do chorób wątroby, układu krążenia oraz zaburzeń psychicznych. Alkohol obniża także ogólną odporność organizmu oraz mocno zwiększa ryzyko uzależnienia.",
+        "3. W profilaktyce zdrowotnej zaleca się całkowite unikanie alkoholu. Im mniej alkoholu w diecie, tym mniejsze ryzyko negatywnych skutków zdrowotnych. NCEZ podkreśla, że najbezpieczniejszym wyborem jest brak jego spożycia."
+      ],
+      "challenges": {
+        "bronze": { "text": "Wybierz jeden tydzień bez alkoholu.", "days": 7 },
+        "silver": { "text": "Zamień każdą okazję do picia na napój bezalkoholowy.", "days": 14 },
+        "gold": { "text": "Utrzymuj całkowitą abstynencję przez cały okres programu.", "days": 30 }
+      },
+      "quiz": [
+        {
+          "question": "Jaki poziom spożycia alkoholu jest uznawany za najbezpieczniejszy w profilaktyce zdrowotnej?",
+          "options": ["1 szklanka piwa dziennie dla zdrowia", "Całkowity brak spożycia", "Picie wyłącznie mocnych trunków raz w miesiącu"],
+          "correctAnswerIndex": 1
+        },
+        {
+          "question": "Jakie narządy wewnętrzne człowieka najbardziej obciąża i niszczy regularne spożywanie alkoholu?",
+          "options": ["Wątrobę i mózg", "Wyłącznie płuca i układ oddechowy"],
+          "correctAnswerIndex": 0
+        }
+      ]
+    },
+    {
+      "id": "owoce_zamiast_slodyczy",
+      "name": "Owoce zamiast słodyczy",
+      "flashcards": [
+        "1. Owoce są naturalnym źródłem cukrów, witamin i składników mineralnych. W przeciwieństwie do tradycyjnych słodyczy dostarczają także cennego błonnika pokarmowego. Powinny być podstawą zdrowej diety zamiast produktów wysokoprzetworzonych.",
+        "2. Owoce zawierają witaminę C, potas oraz antyoksydanty wspierające odporność. Dzięki błonnikowi pomagają w prawidłowej pracy układu pokarmowego. Mają też znacznie niższą kaloryczność niż większość sklepowych słodyczy.",
+        "3. Regularne jedzenie owoców zmniejsza ochotę na słodycze i przekąski wysokocukrowe. Wspiera utrzymanie prawidłowej masy ciała. Poprawia także ogólne samopoczucie i poziom energii.",
+        "4. Zaleca się spożywanie kilku porcji owoców dziennie w ramach zbilansowanej diety. Najlepiej wybierać owoce świeże, sezonowe i jak najmniej przetworzone. NCEZ podkreśla, że owoce powinny zastępować, a nie uzupełniać słodycze."
+      ],
+      "challenges": {
+        "bronze": { "text": "Raz dziennie zamień słodycz na owoc.", "days": 5 },
+        "silver": { "text": "Przez 5 dni tygodnia nie jedz słodyczy.", "days": 12 },
+        "gold": { "text": "Przez cały tydzień słodycze zastępuj świeżymi owocami.", "days": 25 }
+      },
+      "quiz": [
+        {
+          "question": "Co zawierają świeże owoce, czego z reguły brakuje w przetworzonych, tradycyjnych słodyczach?",
+          "options": ["Tłuszcze utwardzone trans", "Błonnik pokarmowy, witaminy i antyoksydanty"],
+          "correctAnswerIndex": 1
+        },
+        {
+          "question": "Zgodnie z zaleceniami, owoce w diecie powinny słodycze zastępować czy stanowić ich dodatkowe uzupełnienie?",
+          "options": ["Zastępować", "Uzupełniać jako dodatkowa przekąska"],
+          "correctAnswerIndex": 0
+        }
+      ]
+    },
+    {
+      "id": "jedzenie_warzyw",
+      "name": "Jedzenie większej ilości warzyw",
+      "flashcards": [
+        "1. Warzywa są podstawowym źródłem witamin, składników mineralnych i błonnika pokarmowego. Zawierają niewiele kalorii, dzięki czemu doskonale wspierają utrzymanie prawidłowej masy ciała. Według NCEZ powinny być obecne w każdym posiłku.",
+        "2. Regularne spożywanie warzyw wspiera odporność i prawidłową pracę układu pokarmowego. Zmniejsza ryzyko wielu chorób dietozależnych, takich jak otyłość czy choroby serca. Im większa różnorodność warzyw, tym lepsze korzyści dla organizmu."
+      ],
+      "challenges": {
+        "bronze": { "text": "Dodaj warzywo do jednego posiłku dziennie.", "days": 5 },
+        "silver": { "text": "Jedz warzywa przy każdym głównym posiłku.", "days": 12 },
+        "gold": { "text": "Połowę obiadowego talerza wypełniaj różnorodnymi warzywami.", "days": 25 }
+      },
+      "quiz": [
+        {
+          "question": "Dlaczego regularne spożywanie dużej ilości warzyw pomaga skutecznie kontrolować masę ciała?",
+          "options": ["Mają minimalną ilość kalorii przy dużej zawartości błonnika strukturalnego", "Są bogate w nasycone kwasy tłuszczowe i cukier rafinowany"],
+          "correctAnswerIndex": 0
+        },
+        {
+          "question": "Czy według Narodowego Centrum Edukacji Żywieniowej warzywa powinny być obecne w każdym głównym posiłku?",
+          "options": ["Tak, powinny stanowić podstawę każdego posiłku", "Nie, wystarczy zjeść je raz w tygodniu"],
+          "correctAnswerIndex": 0
+        }
+      ]
+    },
+    {
+      "id": "ograniczenie_cukru",
+      "name": "Ograniczenie cukru oraz słodyczy",
+      "flashcards": [
+        "1. Nadmierne spożycie cukru sprzyja szybkiemu przybieraniu na wadze i rozwojowi otyłości. Może także zwiększać ryzyko bolesnej próchnicy oraz chorób metabolicznych. Cukry dodane powinny być bezwzględnie ograniczane.",
+        "2. Słodycze dostarczają dużej ilości kalorii, ale ekstremalnie mało składników odżywczych. Na skutek ich częstego jedzenia dochodzi do wahań poziomu glukozy we krwi, co wywołuje nagłe zjazdy energii i sprzyja uzależnieniu.",
+        "3. Zaleca się ograniczenie słodyczy na rzecz zdrowszych produktów, takich jak owoce. Warto dokładnie czytać etykiety i unikać produktów z dużą ilością cukru dodanego na początku składu. Im mniej cukru, tym lepiej dla zdrowia."
+      ],
+      "challenges": {
+        "bronze": { "text": "Nie dosลาดzaj napojów przez tydzień.", "days": 7 },
+        "silver": { "text": "Ogranicz słodycze do maksymalnie 2 porcji tygodniowo.", "days": 14 },
+        "gold": { "text": "Przez tydzień nie jedz słodyczy ani nie pij żadnych słodzonych napojów.", "days": 30 }
+      },
+      "quiz": [
+        {
+          "question": "Jakie główne ryzyko niesie za sobą stały nadmiar cukru dodanego w codziennej diecie?",
+          "options": ["Anemię i wypłukiwanie potasu", "Rozwój otyłości, próchnicy i chorób metabolicznych", "Wzmocnienie odporności immunologicznej"],
+          "correctAnswerIndex": 1
+        },
+        {
+          "question": "Co jest zdecydowanie zdrowszą i bardziej rekomendowaną alternatywą dla tradycyjnych słodyczy?",
+          "options": ["Świeże owoce", "Soki nektarowe dosładzane karmelem"],
+          "correctAnswerIndex": 0
+        }
+      ]
+    },
+    {
+      "id": "ograniczenie_soli",
+      "name": "Ograniczenie soli/sodu",
+      "flashcards": [
+        "1. Nadmierne spożycie soli (sodu) może prowadzić do nadciśnienia tętniczego i drastycznego obciążenia układu krążenia. Zwiększa także ryzyko chorób serca i nerek. Sól powinna być ograniczana w diecie.",
+        "2. Najwięcej soli znajduje się w produktach wysokoprzetworzonych, takich jak fast food, wędliny, sery i gotowe dania. Często duże ilości soli są też dodawane do pieczywa i przekąsek, przez co łatwo przekroczyć normy.",
+        "3. Warto ograniczać dosalanie potraw i zastępować sól ziołami oraz przyprawami naturalnymi. Zaleca się także wybieranie produktów o obniżonej zawartości sodu. Zmniejszenie spożycia soli wydatnie sprzyja zdrowiu naczyń krwionośnych."
+      ],
+      "challenges": {
+        "bronze": { "text": "Nie dosalaj potraw przy stole.", "days": 5 },
+        "silver": { "text": "Zamień sól na zioła w minimum połowie przygotowywanych posiłków.", "days": 12 },
+        "gold": { "text": "Ogranicz produkty wysokosolone (chipsy, wędliny, fast food) przez cały tydzień.", "days": 25 }
+      },
+      "quiz": [
+        {
+          "question": "Jakie niebezpieczne schorzenie układu krążenia może powodować nadmierne spożycie soli kuchennej?",
+          "options": ["Niskie ciśnienie tętnicze", "Nadciśnienie tętnicze i obciążenie nerek", "Anemię z niedoboru żelaza"],
+          "correctAnswerIndex": 1
+        },
+        {
+          "question": "Ile maksymalnie soli kuchennej zaleca się spożywać dziennie według ogólnych norm zdrowotnych?",
+          "options": ["Około 5 g (jedna płaska łyżeczka)", "Około 25 g", "Sól należy całkowicie wyeliminować do zera"],
+          "correctAnswerIndex": 0
+        }
+      ]
+    },
+    {
+      "id": "unikanie_wysokoprzetworzonych",
+      "name": "Unikanie produktów wysokoprzetworzonych",
+      "flashcards": [
+        "1. Produkty wysokoprzetworzone to żywność poddana wielu procesom technologicznym, często z dodatkiem cukru, soli, tłuszczów i konserwantów. Zwykle są gotowe do szybkiego spożycia, ale mają bardzo niską wartość odżywczą.",
+        "2. Częste spożywanie takich produktów może prowadzić do nadwagi, otyłości i chorób metabolicznych. Zawierają one dużo kalorii, ale mało witamin, błonnika i składników mineralnych. Mogą także zwiększać ryzyko chorób serca.",
+        "3. Zaleca się wybieranie produktów jak najmniej przetworzonych, np. świeżych warzyw, owoców i produktów pełnoziarnistych. Warto czytać etykiety i unikać długich składów. Pamiętaj: im prostszy skład, tym lepszy wybór dla zdrowia."
+      ],
+      "challenges": {
+        "bronze": { "text": "Zamień jeden wysoko przetworzony produkt na naturalny odpowiednik.", "days": 5 },
+        "silver": { "text": "Codziennie sprawdź skład przynajmniej jednego kupowanego produktu.", "days": 12 },
+        "gold": { "text": "Przez tydzień nie kupuj produktów z bardzo długim składem i dużą liczbą dodatków.", "days": 25 }
+      },
+      "quiz": [
+        {
+          "question": "Czym głównie charakteryzują się szkodliwe produkty wysokoprzetworzone?",
+          "options": ["Zawierają dużo sztucznych dodatków chemicznych i mają niską wartość odżywczą", "Są bogate w błonnik i minerały strukturalne"],
+          "correctAnswerIndex": 0
+        },
+        {
+          "question": "Jaką prostą i uniwersalną zasadą warto kierować się podczas czytania składu na etykiecie produktu?",
+          "options": ["Im dłuższy i bardziej skomplikowany skład, tym lepiej", "Im krótszy i prostszy skład, tym zdrowszy wybór dla organizmu"],
           "correctAnswerIndex": 1
         }
       ]

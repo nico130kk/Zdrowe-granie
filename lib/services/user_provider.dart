@@ -1,3 +1,6 @@
+/// Provider managing user state, including JSON data loading, progress saving,
+/// and preventing multiple challenge completions in a single day using the
+/// `lastChallengeClickDates` mechanism.
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle; 
@@ -14,7 +17,6 @@ class UserProvider extends ChangeNotifier {
   bool get isLoading => _isLoading;
   Map<String, dynamic> get lessonContents => _lessonContents;
 
-  // Sprawdza, czy gracz kliknął już dzisiaj przycisk powtórki
   bool get isDailyReviewDone {
     if (_profile?.lastReviewDate == null) return false;
     final now = DateTime.now();
@@ -23,7 +25,18 @@ class UserProvider extends ChangeNotifier {
            _profile!.lastReviewDate!.day == now.day;
   }
 
-  // Wrzuca wszystkie pytania z ukończonych lekcji do wiadra, miesza i zwraca losowe
+  bool isChallengeAvailableToday(String nodeId) {
+    if (_profile == null) return false;
+    
+    final lastClickDateStr = _profile!.lastChallengeClickDates[nodeId];
+    if (lastClickDateStr == null) return true;
+
+    final now = DateTime.now();
+    final todayStr = "${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}";
+    
+    return lastClickDateStr != todayStr;
+  }
+
   List<dynamic> getRandomReviewQuestions() {
     if (_profile == null) return [];
     List<dynamic> pool = [];
@@ -35,8 +48,8 @@ class UserProvider extends ChangeNotifier {
       }
     }
     
-    pool.shuffle(); // Losowanie!
-    return pool.take(5).toList(); // Bierzemy max 5 pytań (jak mniej, weźmie wszystkie)
+    pool.shuffle();
+    return pool.take(5).toList();
   }
 
   Future<void> loadUser(String uid) async {
@@ -60,7 +73,8 @@ class UserProvider extends ChangeNotifier {
           uid: 'local_user',
           streak: 0,
           completedLessonsIDs: [],
-          challengesProgress: {}, 
+          challengesProgress: {},
+          lastChallengeClickDates: {},
         );
         await _saveToLocal();
       }
@@ -89,11 +103,11 @@ class UserProvider extends ChangeNotifier {
     if (lastReview == null || _profile!.streak == 0) {
       _profile!.streak = 1;
     } else if (today.isAtSameMomentAs(lastReview)) {
-      // Dziś już zaliczone - nic nie robimy z licznikiem
+      
     } else if (today.difference(lastReview).inDays == 1) {
       _profile!.streak += 1;
     } else {
-      _profile!.streak = 1; // Stracony streak, zaczynamy od nowa
+      _profile!.streak = 1;
     }
 
     _profile!.lastReviewDate = now;
@@ -101,9 +115,15 @@ class UserProvider extends ChangeNotifier {
     await _saveToLocal();
   }
 
-  Future<void> updateChallenge(String challengeId, int newProgress) async {
+  Future<void> updateChallenge(String nodeId, String challengeKey, int newProgress) async {
     if (_profile == null) return;
-    _profile!.challengesProgress[challengeId] = newProgress;
+    
+    final now = DateTime.now();
+    final todayStr = "${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}";
+
+    _profile!.challengesProgress[challengeKey] = newProgress;
+    _profile!.lastChallengeClickDates[nodeId] = todayStr;
+    
     notifyListeners();
     await _saveToLocal();
   }

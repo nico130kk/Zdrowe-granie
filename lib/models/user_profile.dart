@@ -1,9 +1,10 @@
 class UserProfile {
-  final String uid; // Zostawiamy dla porządku, będzie po prostu "local_user"
+  final String uid; 
   int streak;
   DateTime? lastReviewDate;
   List<String> completedLessonsIDs;
   Map<String, int> challengesProgress;
+  Map<String, String> lastChallengeClickDates;
 
   UserProfile({
     required this.uid,
@@ -11,9 +12,9 @@ class UserProfile {
     this.lastReviewDate,
     required this.completedLessonsIDs,
     required this.challengesProgress,
+    required this.lastChallengeClickDates,
   });
 
-  // Tłumaczenie z JSONa (Odczyt z dysku)
   factory UserProfile.fromJson(Map<String, dynamic> json) {
     return UserProfile(
       uid: json['uid'],
@@ -21,10 +22,10 @@ class UserProfile {
       lastReviewDate: json['lastReviewDate'] != null ? DateTime.parse(json['lastReviewDate']) : null,
       completedLessonsIDs: List<String>.from(json['completedLessonsIDs']),
       challengesProgress: Map<String, int>.from(json['challengesProgress']),
+      lastChallengeClickDates: Map<String, String>.from(json['lastChallengeClickDates'] ?? {}),
     );
   }
 
-  // Tłumaczenie na JSONa (Zapis na dysk)
   Map<String, dynamic> toJson() {
     return {
       'uid': uid,
@@ -32,6 +33,7 @@ class UserProfile {
       'lastReviewDate': lastReviewDate?.toIso8601String(),
       'completedLessonsIDs': completedLessonsIDs,
       'challengesProgress': challengesProgress,
+      'lastChallengeClickDates': lastChallengeClickDates,
     };
   }
 }

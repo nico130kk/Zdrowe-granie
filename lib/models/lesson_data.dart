@@ -1,6 +1,10 @@
+/// Defines data models for map nodes and the static layout of the entire lesson tree.
+/// Hierarchy, names, and relationships are strictly mapped to the original project flowchart.
+
 class Flashcard {
   final String front;
   final String back;
+  
   const Flashcard({required this.front, required this.back});
 }
 
@@ -8,7 +12,12 @@ class QuizQuestion {
   final String question;
   final List<String> options;
   final int correctAnswerIndex;
-  const QuizQuestion({required this.question, required this.options, required this.correctAnswerIndex});
+  
+  const QuizQuestion({
+    required this.question, 
+    required this.options, 
+    required this.correctAnswerIndex
+  });
 }
 
 class MapNode {
@@ -17,10 +26,6 @@ class MapNode {
   final double x;
   final double y;
   final String? requiredParentId;
-  
-  // 🔥 TE POLA WRACAJĄ, żeby naprawić błędy!
-  // UWAGA: Jeśli miałeś tu wcześniej konkretne klasy (np. List<Flashcard> lub Quiz),
-  // podmień słówko 'dynamic' na swoje stare nazwy.
   final List<dynamic> flashcards;
   final dynamic finalQuiz;
 
@@ -30,30 +35,50 @@ class MapNode {
     required this.x,
     required this.y,
     this.requiredParentId,
-    // Domyślnie ustawiamy puste wartości, bo i tak docelowo wepniemy tu JSON-a!
-    this.flashcards = const [], 
+    this.flashcards = const [],
     this.finalQuiz,
   });
 }
 
-// Nasza nowa mapa ułożona dokładnie według Twojego odręcznego szkicu!
 const List<MapNode> appNodes = [
-  // GŁÓWNY WĘZEŁ (Odblokowany na start)
-  MapNode(id: 'dieta', title: 'Dieta', x: -50, y: 150, requiredParentId: null),
+  MapNode(id: 'start', title: 'Talerz\nzdrowego żywienia', x: -180, y: 0, requiredParentId: null),
+  MapNode(id: 'dieta', title: 'Dieta', x: 0, y: 0, requiredParentId: 'start'),
   
-  // ODNOGI OD DIETY
-  MapNode(id: 'warzywa_owoce', title: 'Warzywa\ni Owoce', x: -220, y: 50, requiredParentId: 'dieta'),
-  MapNode(id: 'produkty_zbozowe', title: 'Zbożowe', x: -160, y: -80, requiredParentId: 'dieta'),
-  MapNode(id: 'tluszcze', title: 'Tłuszcze', x: 80, y: 250, requiredParentId: 'dieta'),
-  
-  // BIAŁKO (Hub centralny odblokowywany przez Dietę)
-  MapNode(id: 'bialko', title: 'Białko', x: 80, y: 0, requiredParentId: 'dieta'),
-  
-  // ODNOGI OD BIAŁKA
-  MapNode(id: 'mieso', title: 'Mięso', x: -60, y: -160, requiredParentId: 'bialko'),
-  MapNode(id: 'ryby', title: 'Ryby', x: 40, y: -220, requiredParentId: 'bialko'),
-  MapNode(id: 'jaja', title: 'Jaja', x: 150, y: -200, requiredParentId: 'bialko'),
-  MapNode(id: 'mleko_nabial', title: 'Nabiał', x: 240, y: -120, requiredParentId: 'bialko'),
-  MapNode(id: 'orzechy', title: 'Orzechy', x: 270, y: -10, requiredParentId: 'bialko'),
-  MapNode(id: 'straczkowe', title: 'Strączki', x: 220, y: 100, requiredParentId: 'bialko'),
+  MapNode(id: 'skladniki', title: 'Składniki\nzdrowej diety', x: 0, y: 140, requiredParentId: 'dieta'),
+  MapNode(id: 'nawyki', title: 'Zdrowe nawyki\nżywieniowe', x: 0, y: -140, requiredParentId: 'dieta'),
+
+  MapNode(id: 'warzywa_owoce', title: 'Warzywa i\nOwoce', x: -330, y: 260, requiredParentId: 'skladniki'),
+  MapNode(id: 'witaminy', title: 'Witaminy', x: -330, y: 360, requiredParentId: 'warzywa_owoce'),
+
+  MapNode(id: 'produkty_zbozowe', title: 'Produkty\nzbożowe', x: -220, y: 260, requiredParentId: 'skladniki'),
+  MapNode(id: 'blonnik', title: 'Błonnik\npokarmowy', x: -220, y: 360, requiredParentId: 'produkty_zbozowe'),
+
+  MapNode(id: 'mleko_nabial', title: 'Mleko i przetwory\nmleczne', x: -110, y: 260, requiredParentId: 'skladniki'),
+  MapNode(id: 'bialko', title: 'Białko', x: -110, y: 360, requiredParentId: 'mleko_nabial'),
+
+  MapNode(id: 'mieso', title: 'Mięso', x: 0, y: 260, requiredParentId: 'skladniki'),
+  MapNode(id: 'ryby', title: 'Ryby', x: 0, y: 360, requiredParentId: 'mieso'),
+  MapNode(id: 'jaja', title: 'Jajka', x: 0, y: 460, requiredParentId: 'ryby'),
+
+  MapNode(id: 'straczkowe', title: 'Nasiona roślin\nstrączkowych', x: 110, y: 260, requiredParentId: 'skladniki'),
+  MapNode(id: 'weglowodany', title: 'Węglowodany', x: 110, y: 360, requiredParentId: 'straczkowe'),
+
+  MapNode(id: 'orzechy', title: 'Orzechy i\nnasiona', x: 220, y: 260, requiredParentId: 'skladniki'),
+  MapNode(id: 'mineraly', title: 'Składniki\nmineralne', x: 220, y: 360, requiredParentId: 'orzechy'),
+
+  MapNode(id: 'tluszcze', title: 'Tłuszcze', x: 330, y: 260, requiredParentId: 'skladniki'),
+
+  MapNode(id: 'posilki_4_5', title: '4-5 posiłków\ndziennie', x: -250, y: -260, requiredParentId: 'nawyki'),
+  MapNode(id: 'regularne_pory', title: 'Regularne pory\nposiłków', x: -250, y: -360, requiredParentId: 'posilki_4_5'),
+  MapNode(id: 'dokladne_przezuwanie', title: 'Dokładne\nprzeżuwanie', x: -250, y: -460, requiredParentId: 'regularne_pory'),
+
+  MapNode(id: 'woda_napoje', title: 'Picie wody/\nNapoje', x: -80, y: -260, requiredParentId: 'nawyki'),
+  MapNode(id: 'unikanie_alkoholu', title: 'Unikanie\nalkoholu', x: -80, y: -360, requiredParentId: 'woda_napoje'),
+
+  MapNode(id: 'owoce_zamiast_slodyczy', title: 'Owoce zamiast\nsłodyczy', x: 90, y: -260, requiredParentId: 'nawyki'),
+  MapNode(id: 'jedzenie_warzyw', title: 'Jedzenie większej\nilości warzyw', x: 90, y: -360, requiredParentId: 'owoce_zamiast_slodyczy'),
+  MapNode(id: 'ograniczenie_cukru', title: 'Ograniczenie cukru\noraz słodyczy', x: 90, y: -460, requiredParentId: 'jedzenie_warzyw'),
+
+  MapNode(id: 'ograniczenie_soli', title: 'Ograniczenie\nsoli/sodu', x: 260, y: -260, requiredParentId: 'nawyki'),
+  MapNode(id: 'unikanie_wysokoprzetworzonych', title: 'Unikanie produktów\nwysokoprzetworzonych', x: 260, y: -360, requiredParentId: 'ograniczenie_soli'),
 ];
