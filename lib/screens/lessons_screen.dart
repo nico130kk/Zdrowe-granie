@@ -1,3 +1,7 @@
+/// Screen displaying the interactive custom graph map.
+/// Dynamically checks parent nodes to safely unlock descendants based on 
+/// customized JSON bronze medal day requirements or direct lesson completion.
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../services/user_provider.dart';
@@ -19,8 +23,9 @@ class LessonsScreen extends StatelessWidget {
       ),
       body: LayoutBuilder(
         builder: (context, constraints) {
-          // Center of the map
           final Offset mapCenter = Offset(constraints.maxWidth / 2, constraints.maxHeight / 2);
+          final userProvider = context.watch<UserProvider>();
+          final profile = userProvider.profile;
 
           return InteractiveViewer(
             constrained: false,
@@ -33,43 +38,36 @@ class LessonsScreen extends StatelessWidget {
               child: Stack(
                 clipBehavior: Clip.none,
                 children: [
-                  // 1. CONNECTION LINES (Drawn under nodes)
                   Positioned.fill(
                     child: CustomPaint(
                       painter: GraphConnectionPainter(
                         nodes: appNodes,
-                        userProvider: context.watch<UserProvider>(),
+                        profile: profile,
+                        userProvider: userProvider,
                         center: mapCenter,
                       ),
                     ),
                   ),
 
-                  // 2. NODES (Circles)
                   ...appNodes.map((node) {
-                    final userProvider = context.watch<UserProvider>();
-                    final profile = userProvider.profile;
                     final bool isCompleted = profile?.completedLessonsIDs.contains(node.id) ?? false;
-                    
-                    // LOCK LOGIC
                     bool isLocked = true;
-                    if (node.requiredParentId == null) {
-                      isLocked = false; // Start node
-                    } else {
-                      final parentContent = userProvider.lessonContents[node.requiredParentId];
-                      bool parentHasChallenges = parentContent?['challenges'] != null;
 
-                      if (parentHasChallenges) {
-                        // If parent has challenges, check for bronze medal
-                        int requiredBronzeToUnlock = parentContent?['challenges']?['bronze']?['days'] ?? 6;
-                        int parentBronzeProgress = profile?.challengesProgress['${node.requiredParentId}_braz'] ?? 0;
-                        if (parentBronzeProgress >= requiredBronzeToUnlock) {
+                    if (node.requiredParentId == null) {
+                      isLocked = false; 
+                    } else {
+                      final bool isParentCompleted = profile?.completedLessonsIDs.contains(node.requiredParentId) ?? false;
+                      final parentContent = userProvider.lessonContents[node.requiredParentId];
+                      
+                      if (parentContent != null && parentContent['challenges'] != null) {
+                        final int reqBronze = parentContent['challenges']['bronze']?['days'] ?? 6;
+                        final int parentBronzeProgress = profile?.challengesProgress['${node.requiredParentId}_braz'] ?? 0;
+                        
+                        if (parentBronzeProgress >= reqBronze) {
                           isLocked = false;
                         }
-                      } else {
-                        // If parent has NO challenges, just check if it's completed
-                        if (profile?.completedLessonsIDs.contains(node.requiredParentId) == true) {
-                          isLocked = false;
-                        }
+                      } else if (isParentCompleted) {
+                        isLocked = false;
                       }
                     }
 
@@ -89,14 +87,13 @@ class LessonsScreen extends StatelessWidget {
   }
 
   Widget _buildGraphNode(BuildContext context, MapNode node, bool isLocked, bool isCompleted) {
-    // Visual style of nodes
     Color bgColor = isLocked ? Colors.grey[300]! : (isCompleted ? Colors.green[400]! : Colors.white);
     Color borderColor = isLocked ? Colors.grey[400]! : (isCompleted ? Colors.green[600]! : Colors.blueAccent);
     Color iconColor = isLocked ? Colors.grey[500]! : (isCompleted ? Colors.white : Colors.blueAccent);
 
     return GestureDetector(
       onTap: isLocked
-          ? () => ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Zdobądź Brązowy Medal (lub ukończ) w poprzednim temacie! 🔒")))
+          ? () => ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Zdobądź Brązowy Medal w poprzednim temacie! 🔒")))
           : () => Navigator.push(context, MaterialPageRoute(builder: (_) => FlashcardLessonScreen(lesson: node))),
       child: Column(
         children: [
@@ -125,6 +122,7 @@ class LessonsScreen extends StatelessWidget {
             decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.9), borderRadius: BorderRadius.circular(12)),
             child: Text(
               node.title,
+              textAlign: TextAlign.center,
               style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: isLocked ? Colors.grey : Colors.black87),
             ),
           ),
@@ -134,13 +132,18 @@ class LessonsScreen extends StatelessWidget {
   }
 }
 
-// DRAWING LINES
 class GraphConnectionPainter extends CustomPainter {
   final List<MapNode> nodes;
+  final dynamic profile;
   final UserProvider userProvider;
   final Offset center;
 
-  GraphConnectionPainter({required this.nodes, required this.userProvider, required this.center});
+  GraphConnectionPainter({
+    required this.nodes, 
+    required this.profile, 
+    required this.userProvider, 
+    required this.center
+  });
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -149,30 +152,28 @@ class GraphConnectionPainter extends CustomPainter {
       ..strokeCap = StrokeCap.round
       ..style = PaintingStyle.stroke;
 
-    final profile = userProvider.profile;
-
     for (var node in nodes) {
       if (node.requiredParentId != null) {
         final parent = nodes.firstWhere((n) => n.id == node.requiredParentId);
-        
         final start = Offset(center.dx + parent.x, center.dy + parent.y);
         final end = Offset(center.dx + node.x, center.dy + node.y);
 
+        final bool isParentCompleted = profile?.completedLessonsIDs.contains(node.requiredParentId) ?? false;
         final parentContent = userProvider.lessonContents[node.requiredParentId];
-        bool parentHasChallenges = parentContent?['challenges'] != null;
         bool isUnlocked = false;
 
-        if (parentHasChallenges) {
-          int requiredBronzeToUnlock = parentContent?['challenges']?['bronze']?['days'] ?? 6;
-          int parentBronzeProgress = profile?.challengesProgress['${node.requiredParentId}_braz'] ?? 0;
-          isUnlocked = parentBronzeProgress >= requiredBronzeToUnlock;
-        } else {
-          isUnlocked = profile?.completedLessonsIDs.contains(node.requiredParentId) == true;
+        if (parentContent != null && parentContent['challenges'] != null) {
+          final int reqBronze = parentContent['challenges']['bronze']?['days'] ?? 6;
+          final int parentBronzeProgress = profile?.challengesProgress['${node.requiredParentId}_braz'] ?? 0;
+          
+          if (parentBronzeProgress >= reqBronze) {
+            isUnlocked = true;
+          }
+        } else if (isParentCompleted) {
+          isUnlocked = true;
         }
-        
-        // Line highlights if the child node is unlocked
-        paint.color = isUnlocked ? Colors.blueAccent.withValues(alpha: 0.6) : Colors.grey[300]!;
 
+        paint.color = isUnlocked ? Colors.blueAccent.withValues(alpha: 0.6) : Colors.grey[300]!;
         canvas.drawLine(start, end, paint);
       }
     }
